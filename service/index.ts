@@ -18,6 +18,7 @@ app.use('/api', apiRoutes);
 
 // Error Handling Middleware (must be last)
 app.use(errorHandler);
+app.use();
 
 // Start the server
 app.listen(config.port, () => {

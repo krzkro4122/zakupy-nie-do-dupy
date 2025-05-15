@@ -4,13 +4,12 @@ dotenv.config();
 
 interface AppConfig {
   port: number;
-  // Add other configuration variables here
-  // exampleDbUrl: string;
+  databaseUrl: string;
 }
 
 const config: AppConfig = {
   port: parseInt(process.env.PORT || '3000', 10),
-  // exampleDbUrl: process.env.DATABASE_URL || 'mongodb://localhost:27017/mydb',
+  databaseUrl: process.env.DATABASE_URL || 'http://localhost:8090',
 };
 
 if (isNaN(config.port)) {

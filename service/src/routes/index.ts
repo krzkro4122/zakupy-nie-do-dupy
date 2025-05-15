@@ -1,11 +1,10 @@
 import { Router } from 'express';
-import shoppingListRoutes from './shoppingListRoutes';
+import shoppingListRoutes from './productRoutes';
 
 const router = Router();
 
 // Mount individual routers
 router.use('/shopping-list', shoppingListRoutes);
-
-// Add other route groups here (e.g., router.use('/users', userRoutes);)
+router.use('/users', shoppingListRoutes);
 
 export default router;

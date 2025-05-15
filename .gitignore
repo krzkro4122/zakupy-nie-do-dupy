@@ -7,6 +7,11 @@ dist/
 # Environment variables
 .env
 
+# Database
+pocketbase
+pd_data/
+*.db
+
 # Logs
 logs/
 *.log

@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { ApiError } from '../types'; // Import the custom error type
+import { ApiError } from '../types';
 
-// Custom Error class (optional, but good for structured errors)
 export class HttpError extends Error implements ApiError {
   statusCode: number;
   details?: any;
@@ -10,21 +9,21 @@ export class HttpError extends Error implements ApiError {
     super(message);
     this.statusCode = statusCode;
     this.details = details;
-    Object.setPrototypeOf(this, HttpError.prototype); // Correct prototype chain
+    Object.setPrototypeOf(this, HttpError.prototype);
   }
 }
 
-export const errorHandler = (err: Error | HttpError, req: Request, res: Response, next: NextFunction) => {
-  const statusCode = (err as HttpError).statusCode || 500;
-  const message = err.message || 'An unexpected error occurred.';
+export const errorHandler = (error: Error | HttpError, request: Request, response: Response, next: NextFunction) => {
+  const statusCode = (error as HttpError).statusCode || 500;
+  const message = error.message || 'An unexpected error occurred.';
 
-  console.error(`[ERROR] ${statusCode}: ${message}`, err); // Log the error for debugging
+  console.error(`[ERROR] ${statusCode}: ${message}`, error);
 
   const errorResponse: ApiError = {
-      statusCode,
-      message,
-      details: (err as HttpError).details // Include details if available
+    statusCode,
+    message,
+    details: (error as HttpError).details
   }
 
-  res.status(statusCode).json(errorResponse);
+  response.status(statusCode).json(errorResponse);
 };
