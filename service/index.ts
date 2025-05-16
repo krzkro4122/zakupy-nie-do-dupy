@@ -1,29 +1,25 @@
 import express from 'express';
-import config from './src/config';
-import apiRoutes from './src/routes';
-import { errorHandler } from './src/middlewares/errorHandler';
-import { authenticateUser } from './src/middlewares/authentication';
+import { config } from './src/config/config';
+import { router } from './src/routes/rootRouter';
+import { errorHandler } from './src/middlewares/errorHandlerMiddleware';
+import { authenticateUser } from './src/middlewares/authMiddleware';
 
 const app = express();
 
-// Middleware
-app.use(express.json()); // Parse JSON request bodies
+const HEALTHCHECK_PATH = '/healthcheck';
 
-// Basic Health Check Endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'ok', message: 'API is healthy' });
+app.get(HEALTHCHECK_PATH, (request, response) => {
+  response.status(200).json({ status: 'ok', message: 'API is healthy' });
 });
 
-// API Routes
-app.use('/api', apiRoutes);
+app.use('/api', router);
 
 // Error Handling Middleware (must be last)
+app.use(express.json());
 app.use(authenticateUser);
 app.use(errorHandler);
 
-// Start the server
 app.listen(config.port, () => {
   console.log(`Server is running on port ${config.port}`);
-  console.log(`Access health check at http://localhost:${config.port}/health`);
-  console.log(`Access shopping list API at http://localhost:${config.port}/api/shopping-list`);
+  console.log(`Access health check at http://localhost:${config.port}${HEALTHCHECK_PATH}`);
 });
