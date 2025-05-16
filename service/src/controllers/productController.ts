@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { CreateProductBody, GetProductParams, Product } from '../types/product';
-import { HttpError } from '../middlewares/errorHandler';
+import { PostProductBody, GetProductParams, ProductResolved, UpdateProductParams, UpdateProductBody, DeleteProductParams } from '../types/product';
+import { HttpError } from '../middlewares/errorHandlerMiddleware';
 import { randomUUID } from 'crypto';
-import { queryProductById, queryProducts, removeProduct } from '../database/local';
+import { addProduct, amendProduct, queryProductById, queryProducts, removeProduct } from '../database/inMemory';
 
 export const getProducts = (request: Request, response: Response, next: NextFunction) => {
     const products = queryProducts();
@@ -20,72 +20,72 @@ export const getProduct = (
 ) => {
     const { id } = request.params;
     const product = queryProductById(id);
-    if (!product) {
-        throw new HttpError(404, `Item with id ${id} not found.`);
-    }
     try {
+        if (!product) {
+            throw new HttpError(404, `Product with id=${id} not found.`);
+        }
         response.json(product);
     } catch (error) {
         next(error);
     }
 };
 
-export const createProduct = (
-    request: Request<{}, {}, CreateProductBody>,
+export const deleteProduct = (
+    request: Request<DeleteProductParams>,
     response: Response,
     next: NextFunction
 ) => {
+    const { id } = request.params;
+    const removedProduct = removeProduct(id);
     try {
-        const { name, quantity = 1 } = request.body;
-
-        if (!name) {
-            throw new HttpError(400, 'Item name is required.');
+        if (!removedProduct) {
+            throw new HttpError(404, `Product with id=${id} not found.`);
         }
-
-        const newItem: Product = {
-            id: randomUUID(),
-            name,
-            quantity,
-            purchased: false,
-        };
-
-        products.push(newItem);
-
-        response.status(201).json(newItem);
+        response.json(removedProduct);
     } catch (error) {
         next(error);
     }
 };
 
-export const deleteProduct = (
-    request: Request<{}, {}, CreateProductBody>,
+export const createProduct = (
+    request: Request<{}, {}, PostProductBody>,
     response: Response,
     next: NextFunction
 ) => {
+    const { name } = request.body;
     try {
-        const { name } = request.body;
-
         if (!name) {
             throw new HttpError(400, 'Item name is required.');
         }
-
-        const newItem: Product = {
+        const productToAdd: ProductResolved = {
             id: randomUUID(),
             name,
         };
-
-        removeProduct(newItem);
-
-        response.status(201).json(newItem);
+        const addedProduct = addProduct(productToAdd);
+        response.status(201).json(addedProduct);
     } catch (error) {
         next(error);
     }
 };
 
 export const updateProduct = (
-    request: Request<{}, {}, CreateProductBody>,
+    request: Request<UpdateProductParams, {}, UpdateProductBody>,
     response: Response,
     next: NextFunction
 ) => {
-    // unimplemented
+    const { id } = request.params;
+    const { id: newId, name: newName } = request.body;
+    try {
+        const productToUpdate: ProductResolved = {
+            id: newId,
+            name: newName,
+        };
+        const amendedProduct = amendProduct(id, productToUpdate);
+        if (!amendedProduct) {
+            throw new HttpError(404, `Product with id=${id} not found.`);
+        }
+        response.json(amendedProduct);
+    } catch (error) {
+        next(error);
+    }
 }

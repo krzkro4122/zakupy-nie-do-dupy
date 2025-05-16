@@ -1,18 +1,13 @@
-import { UUID } from "crypto";
+import { Identifiable } from "./common";
 
-export interface Product {
-    id: UUID;
+export interface ProductBase {
     name: string;
 }
 
-export interface GetProductParams {
-    id: UUID;
-}
+export interface ProductResolved extends ProductBase, Identifiable { }
 
-export interface CreateProductBody {
-    name: string;
-}
-
-export interface DeleteProductParams {
-    id: UUID;
-}
+export interface GetProductParams extends Identifiable { }
+export interface DeleteProductParams extends Identifiable { }
+export interface UpdateProductParams extends Identifiable { }
+export interface UpdateProductBody extends ProductResolved { }
+export interface PostProductBody extends ProductBase { }
