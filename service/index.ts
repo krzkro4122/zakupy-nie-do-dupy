@@ -2,6 +2,7 @@ import express from 'express';
 import config from './src/config';
 import apiRoutes from './src/routes';
 import { errorHandler } from './src/middlewares/errorHandler';
+import { authenticateUser } from './src/middlewares/authentication';
 
 const app = express();
 
@@ -17,8 +18,8 @@ app.get('/health', (req, res) => {
 app.use('/api', apiRoutes);
 
 // Error Handling Middleware (must be last)
+app.use(authenticateUser);
 app.use(errorHandler);
-app.use();
 
 // Start the server
 app.listen(config.port, () => {

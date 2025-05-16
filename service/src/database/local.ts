@@ -20,7 +20,7 @@ export const addProduct = (product: Product) => {
     return true;
 }
 
-export const deleteProduct = (productToDelete: Product) => {
+export const removeProduct = (productToDelete: Product) => {
     const index = products.findIndex(product => product.id === productToDelete.id);
     if (index > -1) {
         products.splice(index, 1);

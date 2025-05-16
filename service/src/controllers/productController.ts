@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { CreateProductBody, GetProductParams, Product } from '../types/product';
 import { HttpError } from '../middlewares/errorHandler';
 import { randomUUID } from 'crypto';
-import { queryProductById, queryProducts } from '../database/local';
+import { queryProductById, queryProducts, removeProduct } from '../database/local';
 
 export const getProducts = (request: Request, response: Response, next: NextFunction) => {
     const products = queryProducts();
@@ -74,10 +74,18 @@ export const deleteProduct = (
             name,
         };
 
-        products.push(newItem);
+        removeProduct(newItem);
 
         response.status(201).json(newItem);
     } catch (error) {
         next(error);
     }
 };
+
+export const updateProduct = (
+    request: Request<{}, {}, CreateProductBody>,
+    response: Response,
+    next: NextFunction
+) => {
+    // unimplemented
+}
