@@ -74,13 +74,9 @@ export const updateProduct = (
     next: NextFunction
 ) => {
     const { id } = request.params;
-    const { id: newId, name: newName } = request.body;
+    const newProductPayload = request.body;
     try {
-        const productToUpdate: ProductResolved = {
-            id: newId,
-            name: newName,
-        };
-        const amendedProduct = amendProduct(id, productToUpdate);
+        const amendedProduct = amendProduct(id, newProductPayload);
         if (!amendedProduct) {
             throw new HttpError(404, `Product with id=${id} not found.`);
         }
