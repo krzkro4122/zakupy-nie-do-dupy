@@ -2,7 +2,7 @@ import express from 'express';
 import { config } from './src/config/config';
 import { router } from './src/routes/rootRouter';
 import { errorHandler } from './src/middlewares/errorHandlerMiddleware';
-import { authenticateUser } from './src/middlewares/authMiddleware';
+import { authenticateUser } from './src/middlewares/authenticationMiddleware';
 
 const app = express();
 
