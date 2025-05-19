@@ -2,10 +2,10 @@ import { Request, Response, NextFunction } from 'express';
 import { PostProductBody, GetProductParams, ProductResolved, UpdateProductParams, UpdateProductBody, DeleteProductParams } from '../types/product';
 import { HttpError } from '../middlewares/errorHandlerMiddleware';
 import { randomUUID } from 'crypto';
-import { addProduct, amendProduct, queryProductById, queryProducts, removeProduct } from '../database/inMemory';
+import { productDAO } from '../database/productDAO';
 
-export const getProducts = (request: Request, response: Response, next: NextFunction) => {
-    const products = queryProducts();
+export const getProducts = async (request: Request, response: Response, next: NextFunction) => {
+    const products = await productDAO.queryItems();
     try {
         response.json(products);
     } catch (error) {
@@ -13,13 +13,13 @@ export const getProducts = (request: Request, response: Response, next: NextFunc
     }
 };
 
-export const getProduct = (
+export const getProduct = async (
     request: Request<GetProductParams>,
     response: Response,
     next: NextFunction
 ) => {
     const { id } = request.params;
-    const product = queryProductById(id);
+    const product = await productDAO.queryItem(id);
     try {
         if (!product) {
             throw new HttpError(404, `Product with id=${id} not found.`);
@@ -30,24 +30,7 @@ export const getProduct = (
     }
 };
 
-export const deleteProduct = (
-    request: Request<DeleteProductParams>,
-    response: Response,
-    next: NextFunction
-) => {
-    const { id } = request.params;
-    const removedProduct = removeProduct(id);
-    try {
-        if (!removedProduct) {
-            throw new HttpError(404, `Product with id=${id} not found.`);
-        }
-        response.json(removedProduct);
-    } catch (error) {
-        next(error);
-    }
-};
-
-export const createProduct = (
+export const createProduct = async (
     request: Request<{}, {}, PostProductBody>,
     response: Response,
     next: NextFunction
@@ -61,14 +44,31 @@ export const createProduct = (
             id: randomUUID(),
             name,
         };
-        const addedProduct = addProduct(productToAdd);
+        const addedProduct = await productDAO.addItem(productToAdd);
         response.status(201).json(addedProduct);
     } catch (error) {
         next(error);
     }
 };
 
-export const updateProduct = (
+export const deleteProduct = async (
+    request: Request<DeleteProductParams>,
+    response: Response,
+    next: NextFunction
+) => {
+    const { id } = request.params;
+    const deleteWasSuccessful = await productDAO.removeItem(id);
+    try {
+        if (!deleteWasSuccessful) {
+            throw new HttpError(404, `Product with id=${id} not found.`);
+        }
+        response.json({success: deleteWasSuccessful});
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const updateProduct = async (
     request: Request<UpdateProductParams, {}, UpdateProductBody>,
     response: Response,
     next: NextFunction
@@ -76,7 +76,7 @@ export const updateProduct = (
     const { id } = request.params;
     const newProductPayload = request.body;
     try {
-        const amendedProduct = amendProduct(id, newProductPayload);
+        const amendedProduct = await productDAO.amendItem(id, newProductPayload);
         if (!amendedProduct) {
             throw new HttpError(404, `Product with id=${id} not found.`);
         }

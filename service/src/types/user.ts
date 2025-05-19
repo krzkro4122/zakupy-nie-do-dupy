@@ -1,9 +1,14 @@
 import { Identifiable } from "./common";
 
 export interface UserBase {
+  email?: string;
+  password: string;
+  verified: boolean;
+  emailVisibility: boolean;
   name: string;
-  quantity: number;
-  purchased: boolean;
+  avatar: string;
+  // created:
+  // updated:
 }
 
 export interface UserResolved extends UserBase, Identifiable { }
