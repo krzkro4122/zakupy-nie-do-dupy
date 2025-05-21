@@ -1,4 +1,4 @@
-import { Identifiable } from "./common";
+import { Identifiable, TimeTracked } from "./common";
 
 export interface UserBase {
   email?: string;
@@ -11,7 +11,7 @@ export interface UserBase {
   // updated:
 }
 
-export interface UserResolved extends UserBase, Identifiable { }
+export interface UserResolved extends UserBase, Identifiable, TimeTracked { }
 
 export interface GetUserParams extends Identifiable { }
 

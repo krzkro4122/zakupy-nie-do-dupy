@@ -6,13 +6,13 @@ import { Products } from './Products';
 import { Logout } from './Logout';
 import { Main } from './Main';
 import { useEffect, useState } from 'react';
-import { getAuthInformation } from '../utilities/authentication';
+import { getUserAuthInformation } from '../utilities/authentication';
 
 export function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const authInformation = getAuthInformation();
+    const authInformation = getUserAuthInformation();
     setIsLoggedIn(authInformation?.isLoggedIn || false);
   });
 
