@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { PostProductBody, GetProductParams, ProductResolved, UpdateProductParams, UpdateProductBody, DeleteProductParams } from '../types/product';
+import { PostProductBody, GetProductParams, ProductResolved, UpdateProductParams, UpdateProductBody, DeleteProductParams, ProductBase } from '../types/product';
 import { HttpError } from '../middlewares/errorHandlerMiddleware';
 import { randomUUID } from 'crypto';
 import { productDAO } from '../database/productDAO';
@@ -40,9 +40,8 @@ export const createProduct = async (
         if (!name) {
             throw new HttpError(400, 'Item name is required.');
         }
-        const productToAdd: ProductResolved = {
-            id: randomUUID(),
-            name,
+        const productToAdd: ProductBase = {
+            ...request.body
         };
         const addedProduct = await productDAO.addItem(productToAdd);
         response.status(201).json(addedProduct);

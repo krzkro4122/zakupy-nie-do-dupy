@@ -1,9 +1,9 @@
 import { UUID } from "crypto";
 
-export interface DAO<T> {
+export interface IDAO<T, BaseT> {
     queryItems: () => Promise<T[]>;
     queryItem: (id: UUID) => Promise<T | undefined>;
-    addItem: (item: T) => Promise<T>;
+    addItem: (item: BaseT) => Promise<T | undefined>;
     removeItem: (id: UUID) => Promise<boolean>;
-    amendItem: (id: UUID, newItemPayload: T) => Promise<T | undefined>;
+    amendItem: (id: UUID, newItemPayload: BaseT) => Promise<T | undefined>;
 }
