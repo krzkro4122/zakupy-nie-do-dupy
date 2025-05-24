@@ -1,6 +1,7 @@
 import type { AxiosRequestConfig, AxiosResponse, RawAxiosRequestHeaders } from "axios";
 import type { ProductBase, ProductResolved } from "../../../shared/types/product";
 import axios from "axios";
+import type { UUIDTypes } from "uuid";
 
 const client = axios.create({
     baseURL: 'http://localhost:3000/api',
@@ -33,6 +34,34 @@ export const postProduct = async (product: ProductBase) => {
         const response: AxiosResponse = await client.post(`/products`, product, config);
         const newProduct: ProductResolved = response.data;
         return newProduct;
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const deleteProduct = async (id: UUIDTypes) => {
+    const config: AxiosRequestConfig = {
+        headers: {
+            'Accept': 'application/json',
+        } as RawAxiosRequestHeaders,
+    };
+    try {
+        const response: AxiosResponse = await client.delete(`/products/${id}`, config);
+        return response.data.success === true;
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const updateProduct = async (id: UUIDTypesm, updatedProduct: ProductBase): Promise<ProductResolved | undefined> => {
+    const config: AxiosRequestConfig = {
+        headers: {
+            'Accept': 'application/json',
+        } as RawAxiosRequestHeaders,
+    };
+    try {
+        const response: AxiosResponse = await client.put(`/products/${id}`, updatedProduct, config);
+        return response.data;
     } catch (err) {
         console.log(err);
     }
