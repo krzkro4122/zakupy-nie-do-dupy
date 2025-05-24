@@ -3,6 +3,7 @@ import { listCollectionAuthMethods } from "../utilities/authentication";
 import { useEffect, useState } from "react";
 import { useAuth } from "./hooks/AuthProvider";
 import { Navigate } from "react-router-dom";
+import { BorderedSection } from "./Sections";
 
 export const Login = () => {
     const auth = useAuth();
@@ -41,13 +42,11 @@ export const Login = () => {
     }
 
     return auth.isLoggedIn ? <Navigate to={'/'}/> : (
-        <section className="flex justify-center">
-            <section className="border-gray-100/50 border-1 rounded-md p-2 flex flex-col items-center w-80">
-                <h1 className="text-2xl mb-2">Log in</h1>
-                {authMethodsList && (<ul className="w-60 flex flex-col gap-2">
-                    {getAuthMethods()}
-                </ul>)}
-            </section>
-        </section>
+        <BorderedSection>
+            <h1 className="text-2xl mb-2">Log in</h1>
+            {authMethodsList && (<ul className="w-60 flex flex-col gap-2">
+                {getAuthMethods()}
+            </ul>)}
+        </BorderedSection>
     );
 };
