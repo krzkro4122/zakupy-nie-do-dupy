@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { PostProductBody, GetProductParams, ProductResolved, UpdateProductParams, UpdateProductBody, DeleteProductParams, ProductBase } from '../types/product';
+import { PostProductBody, GetProductParams, ProductResolved, UpdateProductParams, UpdateProductBody, DeleteProductParams, ProductBase } from '../../../shared/types/product';
 import { HttpError } from '../middlewares/errorHandlerMiddleware';
 import { randomUUID } from 'crypto';
 import { productDAO } from '../database/productDAO';
@@ -61,7 +61,7 @@ export const deleteProduct = async (
         if (!deleteWasSuccessful) {
             throw new HttpError(404, `Product with id=${id} not found.`);
         }
-        response.json({success: deleteWasSuccessful});
+        response.json({ success: deleteWasSuccessful });
     } catch (error) {
         next(error);
     }

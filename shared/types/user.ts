@@ -7,8 +7,6 @@ export interface UserBase {
   emailVisibility: boolean;
   name: string;
   avatar: string;
-  // created:
-  // updated:
 }
 
 export interface UserResolved extends UserBase, Identifiable, TimeTracked { }

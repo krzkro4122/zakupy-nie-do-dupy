@@ -1,7 +1,6 @@
 import Pocketbase from 'pocketbase';
-import type { AuthMethodsList } from "pocketbase";
 
-interface UserAuthInformation {
+export interface UserAuthInformation {
     isLoggedIn: boolean;
 }
 
@@ -27,15 +26,14 @@ export const login = async (authMethod: string, credentials?: any) => {
             authInformation = { isLoggedIn: !!pbConnection.authStore.isValid }
             break
     }
-    // console.log(pbConnection.authStore.isValid);
-    // console.log(pbConnection.authStore.token);
-    // console.log(pbConnection.authStore.record?.id);
     localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, JSON.stringify(authInformation));
     return authInformation;
 };
 
 export const logout = () => {
-    pbConnection.authStore.clear();
+    try {
+        pbConnection.authStore.clear();
+    } catch (e) {}
     localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
 };
 
