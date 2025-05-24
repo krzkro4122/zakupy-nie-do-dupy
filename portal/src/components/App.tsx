@@ -32,8 +32,8 @@ export function App() {
             <Route element={<PrivateRoutes />}>
               <Route path='/' element={<Navigate to='/products' />} />
               <Route path='/products' element={<Products />} />
+              <Route path="*" element={<NotFound />} />
             </Route>
-            {/* <Route path="*" element={<NotFound />} /> */}
             <Route path='/login' element={<Login />} />
           </Routes>
         </Main>
