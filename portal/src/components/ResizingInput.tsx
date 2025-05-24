@@ -3,15 +3,16 @@ import { useEffect, useRef, useState } from "react";
 interface ResizingInputProps {
     formId: string;
     placeholder: string;
+    initialValue: string;
 }
 
 
-export const ResizingInput = ({ formId, placeholder }: ResizingInputProps) => {
-    const [inputValue, setInputValue] = useState('');
+export const ResizingInput = ({ formId, placeholder, initialValue }: ResizingInputProps) => {
+    const [inputValue, setInputValue] = useState(initialValue || '');
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        updateInputWidth(placeholder.length);
+        updateInputWidth(Math.max(initialValue?.length, placeholder.length));
     }, []);
 
     const updateInputWidth = (length: number) => {
