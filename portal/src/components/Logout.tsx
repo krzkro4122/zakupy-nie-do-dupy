@@ -1,21 +1,12 @@
-import { useNavigate } from "react-router-dom";
 import { Button } from "./Button";
-import { logout } from "../utilities/authentication";
+import { useAuth } from "./hooks/AuthProvider";
 
-interface LogoutProps {
-    setIsLoggedIn: (value: React.SetStateAction<boolean>) => void;
-}
-
-export const Logout = ({ setIsLoggedIn }: LogoutProps) => {
-    const navigate = useNavigate();
+export const Logout = () => {
+    const auth = useAuth();
     return (
         <>
             <Button
-                onClick={() => {
-                    logout()
-                    setIsLoggedIn(false);
-                    navigate("/login");
-                }}
+                onClick={auth.logoutAction}
                 displayValue="Log out"
             ></Button>
         </>

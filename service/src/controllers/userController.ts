@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { UpdateUserBody, UpdateUserParams, UserResolved, DeleteUserParams, GetUserParams, PostUserBody } from '../types/user';
+import { UpdateUserBody, UpdateUserParams, UserResolved, DeleteUserParams, GetUserParams, PostUserBody } from '../../../shared/types/user';
 import { HttpError } from '../middlewares/errorHandlerMiddleware';
 import { userDAO } from '../database/userDAO';
 

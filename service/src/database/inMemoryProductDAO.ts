@@ -1,14 +1,27 @@
 import { randomUUID, UUID } from "crypto";
-import { ProductResolved } from "../types/product";
-import { DAO } from "../types/dao";
+import { ProductBase, ProductResolved } from "../../../shared/types/product";
+import { DAO } from "./DAO";
 
 const products: ProductResolved[] = [
-    { id: randomUUID(), name: 'Mleko' },
-    { id: randomUUID(), name: 'Chleb' },
-    { id: randomUUID(), name: 'Ciasto Francuskie' },
+    {
+        id: randomUUID(), name: 'Mleko',
+        created: "",
+        updated: ""
+    },
+    {
+        id: randomUUID(), name: 'Chleb',
+        created: "",
+        updated: ""
+    },
+    {
+        id: randomUUID(), name: 'Ciasto Francuskie',
+        created: "",
+        updated: ""
+    },
 ];
 
-class ProductDAO implements DAO<ProductResolved> {
+class ProductDAO extends DAO<ProductResolved, ProductBase> {
+
     public queryItems = async () => {
         return products;
     };
@@ -17,9 +30,15 @@ class ProductDAO implements DAO<ProductResolved> {
         return products.find(item => item.id === id);
     };
 
-    public addItem = async (product: ProductResolved) => {
-        products.push(product);
-        return product;
+    public addItem = async (product: ProductBase) => {
+        const newProduct: ProductResolved = {
+            ...product,
+            created: "",
+            updated: "",
+            id: randomUUID()
+        }
+        products.push(newProduct);
+        return newProduct;
     }
 
     public removeItem = async (id: UUID) => {
@@ -28,16 +47,13 @@ class ProductDAO implements DAO<ProductResolved> {
         return !!deletedProduct.at(0);
     }
 
-    public amendItem = async (id: UUID, productToUpdate: ProductResolved) => {
+    public amendItem = async (id: UUID, productToUpdate: ProductBase) => {
         const product = products.find(product => product.id === id);
         if (product) {
-            if (productToUpdate.id) {
-                product.id = productToUpdate.id;
-            }
             product.name = productToUpdate.name;
             return product;
         }
     }
 }
 
-export const productDAO = new ProductDAO();
+export const productDAO = new ProductDAO('fakeProducts');

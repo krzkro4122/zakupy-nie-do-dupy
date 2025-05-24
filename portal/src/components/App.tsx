@@ -1,36 +1,43 @@
 import { Header } from './Header'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { PrivateRoutes } from './PrivateRoutes';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { Login } from './Login';
-import { Products } from './Products';
-import { Logout } from './Logout';
+import { Products } from './pages/Products';
 import { Main } from './Main';
-import { useEffect, useState } from 'react';
-import { getUserAuthInformation } from '../utilities/authentication';
+import { NotFound } from './pages/NotFound';
+import { getUserAuthInformation, type UserAuthInformation } from '../utilities/authentication';
+import { useState, useEffect } from 'react';
+import PrivateRoutes from './PrivateRoutes';
+import { AuthProvider } from './hooks/AuthProvider';
+
 
 export function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [authInformation, setAuthInformation] = useState<UserAuthInformation | undefined>(undefined);
 
   useEffect(() => {
-    const authInformation = getUserAuthInformation();
-    setIsLoggedIn(authInformation?.isLoggedIn || false);
+    const newAuthInformation = getUserAuthInformation();
+    const newIsLoggedIn = newAuthInformation?.isLoggedIn;
+    const isLoggedIn = authInformation?.isLoggedIn;
+    if (newIsLoggedIn !== isLoggedIn) {
+      setAuthInformation(authInformation);
+    }
   });
 
   return (
     <>
       <Router>
-        <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}></Header>
+        <AuthProvider>
+        <Header />
         <Main>
           <Routes>
             <Route element={<PrivateRoutes />}>
-              <Route path='/' element={<Products />} />
-              {/* <Route path='/users' element={<Users />} /> */}
-              <Route path='/logout' element={<Logout setIsLoggedIn={setIsLoggedIn} />} />
+              <Route path='/' element={<Navigate to='/products' />} />
+              <Route path='/products' element={<Products />} />
             </Route>
-            <Route path='/login' element={<Login setIsLoggedIn={setIsLoggedIn} />} />
             {/* <Route path="*" element={<NotFound />} /> */}
+            <Route path='/login' element={<Login />} />
           </Routes>
         </Main>
+        </AuthProvider>
       </Router>
     </>
   );

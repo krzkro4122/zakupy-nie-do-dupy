@@ -7,3 +7,10 @@ html, body, #root {
     display: flex;
     flex-direction: column;
 }
+
+main {
+    h1 {
+        font-weight: 500;
+        font-size: x-large;
+    }
+}
