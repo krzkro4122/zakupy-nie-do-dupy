@@ -1,6 +1,6 @@
 interface ButtonProps {
     displayValue: string;
-    onClick: React.MouseEventHandler<HTMLButtonElement> | undefined;
+    onClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
     className?: React.ComponentProps<'button'>['className'];
     disabled?: React.ComponentProps<'button'>['disabled']
 }

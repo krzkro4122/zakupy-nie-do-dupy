@@ -35,11 +35,7 @@ export const createProduct = async (
     response: Response,
     next: NextFunction
 ) => {
-    const { name } = request.body;
     try {
-        if (!name) {
-            throw new HttpError(400, 'Item name is required.');
-        }
         const productToAdd: ProductBase = {
             ...request.body
         };
