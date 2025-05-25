@@ -1,18 +1,19 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type FocusEventHandler } from "react";
 
 interface ResizingInputProps {
     formId: string;
     placeholder: string;
     initialValue: string;
+    onBlur?: FocusEventHandler<HTMLInputElement>;
 }
 
 
-export const ResizingInput = ({ formId, placeholder, initialValue }: ResizingInputProps) => {
+export const ResizingInput = ({ formId, placeholder, initialValue, onBlur }: ResizingInputProps) => {
     const [inputValue, setInputValue] = useState(initialValue || '');
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        updateInputWidth(Math.max(initialValue?.length, placeholder.length));
+        updateInputWidth(initialValue?.length ? initialValue?.length : placeholder.length);
     }, []);
 
     const updateInputWidth = (length: number) => {
@@ -34,7 +35,7 @@ export const ResizingInput = ({ formId, placeholder, initialValue }: ResizingInp
             name="input"
             onChange={onChange}
             autoFocus
-            className="p-2 px-3 box-content font-mono bg-gray-950 text-sm w-auto border-1 border-gray-600 rounded-md hover:bg-gray-900 hover:border-gray-500"
+            onBlur={onBlur}
             type="text"
             placeholder={placeholder}
             value={inputValue}

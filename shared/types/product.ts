@@ -1,4 +1,4 @@
-import { Identifiable, TimeTracked } from "./common";
+import { type Identifiable, type TimeTracked } from "./common";
 
 export interface ProductBase {
     name: string;

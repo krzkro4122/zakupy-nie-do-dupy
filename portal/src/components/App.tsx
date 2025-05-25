@@ -1,6 +1,6 @@
 import { Header } from './Header'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import { Login } from './Login';
+import { Login } from './pages/Login';
 import { Products } from './pages/Products';
 import { Main } from './Main';
 import { NotFound } from './pages/NotFound';
@@ -9,6 +9,8 @@ import { useState, useEffect } from 'react';
 import PrivateRoutes from './PrivateRoutes';
 import { AuthProvider } from './hooks/AuthProvider';
 
+import '../styles/main.css'
+import '../styles/fonts.css'
 
 export function App() {
   const [authInformation, setAuthInformation] = useState<UserAuthInformation | undefined>(undefined);

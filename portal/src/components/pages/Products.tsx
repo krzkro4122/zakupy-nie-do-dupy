@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import type { ProductResolved } from '../../../../shared/types/product';
 import { deleteProduct, fetchProducts, postProduct, updateProduct } from "../../utilities/products";
-import { InlineForm } from "../InlineForm";
-import { Button } from "../Button";
 import type { UUIDTypes } from "uuid";
+import { InlineForm } from "../InlineForm";
+
+import '../../styles/products.css'
 
 export const Products = () => {
     const [products, setProducts] = useState<ProductResolved[]>([]);
@@ -53,20 +54,20 @@ export const Products = () => {
 
     const getProductList = () => {
         return products.map(product => {
-            return (<li key={product.id} className="flex items-center gap-5 justify-between py-1 pr-2 hover:bg-gray-800 border-b-1 border-gray-500">
+            return (<li key={product.id}>
                 <InlineForm
                     action={(formData) => updateProductAction(product.id, formData)}
                     initialDisplayValue={product.name}
                     keepInitialValueAsInput={true}
                 />
-                <button type="button" onClick={() => deleteProductAction(product.id)} className="text-xs hover:bg-red-700 hover:text-black w-fit h-fit px-1 rounded-xs font-mono">X</button>
+                <button type="button" onClick={() => deleteProductAction(product.id)} className="delete-button">X</button>
             </li>);
         });
     };
 
     return (
-        <>
-            <section className="flex flex-row gap-4">
+        <section className="products">
+            <section className="products-header">
                 <h1>Products</h1>
                 <InlineForm
                     initialDisplayValue="Add product"
@@ -74,10 +75,8 @@ export const Products = () => {
                 />
             </section>
             {products.length > 0 && (
-                <section>
-                    <ul className="flex flex-col w-max">{getProductList()}</ul>
-                </section>
+                <ul>{getProductList()}</ul>
             )}
-        </>
+        </section>
     );
 };
