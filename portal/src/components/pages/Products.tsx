@@ -69,14 +69,14 @@ export const Products = () => {
         <section className="products">
             <section className="products-header">
                 <h1>Products</h1>
-                <InlineForm
-                    initialDisplayValue="Add product"
-                    action={addProductAction}
-                />
             </section>
             {products.length > 0 && (
                 <ul>{getProductList()}</ul>
             )}
+            <InlineForm
+                initialDisplayValue="Add product"
+                action={addProductAction}
+            />
         </section>
     );
 };

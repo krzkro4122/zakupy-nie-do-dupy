@@ -10,8 +10,8 @@
 
 .button:hover {
     cursor: pointer;
-    background-color: #101828;
-    border-color: #6a7282;
+    background-color: #292929;
+    border-color: #818182;
 }
 
 .button:disabled {
