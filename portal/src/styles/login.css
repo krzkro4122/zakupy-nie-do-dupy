@@ -1,0 +1,22 @@
+.login {
+    h1 {
+        font-size: 1.5rem;
+        line-height: 1.3333;
+        margin-bottom: 0.5rem;
+    }
+
+    ul {
+        width: 15rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        li {
+            display: flex;
+
+            .expanded-button {
+                flex-grow: 1;
+            }
+        }
+    }
+}

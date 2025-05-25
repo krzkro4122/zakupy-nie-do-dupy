@@ -3,6 +3,8 @@ import { Button } from "./Button";
 import { v4 } from "uuid";
 import { ResizingInput } from "./ResizingInput";
 
+import '../styles/inlineForm.css'
+
 interface InlineFormProps {
     action: (formData: FormData) => void | Promise<void>;
     initialDisplayValue: string;
@@ -22,17 +24,17 @@ export const InlineForm = ({ action, initialDisplayValue, keepInitialValueAsInpu
                 setIsInput(false);
                 action(formData);
             })}
-            className="w-auto"
+            className="inline-form"
         >
             {isInput ?
-                <ResizingInput formId={formId} placeholder={placeholder} initialValue={keepInitialValueAsInput ? initialDisplayValue : ""} /> :
+                <ResizingInput
+                    formId={formId}
+                    onBlur={() => setIsInput(false)}
+                    placeholder={placeholder}
+                    initialValue={keepInitialValueAsInput ? initialDisplayValue : ""}
+                /> :
                 <Button
-                    className="text-sm"
-                    onClick={
-                        () => {
-                            setIsInput(true)
-                        }
-                    }
+                    onClick={() => setIsInput(true)}
                     displayValue={initialDisplayValue}
                 ></Button>
             }

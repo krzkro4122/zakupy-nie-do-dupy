@@ -1,0 +1,50 @@
+.products {
+    width: max-content;
+    min-width: 30%;
+    display: flex;
+    flex-direction: column;
+
+    .products-header {
+        display: flex;
+        flex-grow: 1;
+        flex-direction: row;
+        gap: 1rem;
+    }
+
+    ul {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+
+        li {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 1.25;
+            justify-content: space-between;
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem;
+            padding-right: 0.5rem;
+            border-bottom: 1px solid #6a7282;
+
+            .delete-button {
+                font-size: 0.75rem;
+                width: fit-content;
+                height: fit-content;
+                padding-left: 0.25rem;
+                padding-right: 0.25rem;
+                border-radius: 0.125rem;
+                font-family: monospace;
+            }
+
+            .delete-button:hover {
+                color: black;
+                background-color: #c10007;
+            }
+        }
+
+        li:hover {
+            background-color: #1e2939;
+        }
+    }
+}

@@ -53,7 +53,7 @@ export const deleteProduct = async (id: UUIDTypes) => {
     }
 };
 
-export const updateProduct = async (id: UUIDTypesm, updatedProduct: ProductBase): Promise<ProductResolved | undefined> => {
+export const updateProduct = async (id: UUIDTypes, updatedProduct: ProductBase): Promise<ProductResolved | undefined> => {
     const config: AxiosRequestConfig = {
         headers: {
             'Accept': 'application/json',

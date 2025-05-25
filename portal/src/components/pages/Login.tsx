@@ -1,9 +1,11 @@
-import { Button } from "./Button";
-import { listCollectionAuthMethods } from "../utilities/authentication";
-import { useEffect, useState } from "react";
-import { useAuth } from "./hooks/AuthProvider";
 import { Navigate } from "react-router-dom";
-import { BorderedSection } from "./Sections";
+import { useEffect, useState } from "react";
+import { Button } from "../Button";
+import { listCollectionAuthMethods } from "../../utilities/authentication";
+import { useAuth } from "../hooks/AuthProvider";
+import { BorderedSection } from "../BorderedSection";
+
+import '../../styles/login.css'
 
 export const Login = () => {
     const auth = useAuth();
@@ -25,8 +27,8 @@ export const Login = () => {
         if (authMethodsList) {
             return authMethodsList.map(([methodName, config]) => {
                 return (
-                    <li key={methodName} className="flex gap">
-                        <Button className="grow" displayValue={methodName} disabled={!config.enabled} onClick={
+                    <li key={methodName}>
+                        <Button extraClassNames="expanded-button" displayValue={methodName} disabled={!config.enabled} onClick={
                             () => {
                                 if (methodName === 'manual') {
                                     auth.loginAction(methodName)
@@ -41,10 +43,10 @@ export const Login = () => {
         }
     }
 
-    return auth.isLoggedIn ? <Navigate to={'/'}/> : (
-        <BorderedSection>
-            <h1 className="text-2xl mb-2">Log in</h1>
-            {authMethodsList && (<ul className="w-60 flex flex-col gap-2">
+    return auth.isLoggedIn ? <Navigate to={'/'} /> : (
+        <BorderedSection extraClassNames="login">
+            <h1>Log in</h1>
+            {authMethodsList && (<ul>
                 {getAuthMethods()}
             </ul>)}
         </BorderedSection>
