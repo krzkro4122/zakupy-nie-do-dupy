@@ -5,10 +5,11 @@ interface ResizingInputProps {
     placeholder: string;
     initialValue: string;
     onBlur?: FocusEventHandler<HTMLInputElement>;
+    extraClassNames?: string;
 }
 
 
-export const ResizingInput = ({ formId, placeholder, initialValue, onBlur }: ResizingInputProps) => {
+export const ResizingInput = ({ formId, placeholder, initialValue, onBlur, extraClassNames }: ResizingInputProps) => {
     const [inputValue, setInputValue] = useState(initialValue || '');
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -31,14 +32,15 @@ export const ResizingInput = ({ formId, placeholder, initialValue, onBlur }: Res
 
     return (
         <input
-            form={formId}
-            name="input"
-            onChange={onChange}
-            autoFocus
-            onBlur={onBlur}
             type="text"
+            name='resizing-input'
+            className={`resizing-input ${extraClassNames || ""}`}
+            form={formId}
             placeholder={placeholder}
             value={inputValue}
             ref={inputRef}
+            onChange={onChange}
+            onBlur={onBlur}
+            autoFocus
         />);
 };

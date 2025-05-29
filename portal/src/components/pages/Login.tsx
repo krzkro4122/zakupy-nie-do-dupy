@@ -28,7 +28,7 @@ export const Login = () => {
             return authMethodsList.map(([methodName, config]) => {
                 return (
                     <li key={methodName}>
-                        <Button extraClassNames="expanded-button" displayValue={methodName} disabled={!config.enabled} onClick={
+                        <Button extraClassNames="bordered-button button-expanded" displayValue={methodName} disabled={!config.enabled} onClick={
                             () => {
                                 if (methodName === 'manual') {
                                     auth.loginAction(methodName)

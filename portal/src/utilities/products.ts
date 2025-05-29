@@ -1,7 +1,6 @@
 import type { AxiosRequestConfig, AxiosResponse, RawAxiosRequestHeaders } from "axios";
 import type { ProductBase, ProductResolved } from "../../../shared/types/product";
 import axios from "axios";
-import type { UUIDTypes } from "uuid";
 
 const client = axios.create({
     baseURL: 'http://localhost:3000/api',
@@ -39,7 +38,7 @@ export const postProduct = async (product: ProductBase) => {
     }
 };
 
-export const deleteProduct = async (id: UUIDTypes) => {
+export const deleteProduct = async (id: string) => {
     const config: AxiosRequestConfig = {
         headers: {
             'Accept': 'application/json',
@@ -53,7 +52,7 @@ export const deleteProduct = async (id: UUIDTypes) => {
     }
 };
 
-export const updateProduct = async (id: UUIDTypes, updatedProduct: ProductBase): Promise<ProductResolved | undefined> => {
+export const updateProduct = async (id: string, updatedProduct: ProductBase): Promise<ProductResolved | undefined> => {
     const config: AxiosRequestConfig = {
         headers: {
             'Accept': 'application/json',
