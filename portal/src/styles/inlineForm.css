@@ -1,28 +1,37 @@
 .inline-form {
     width: auto;
+    overflow-x: scroll;
+    scrollbar-width: none;
 
     .button {
         font-size: 0.875rem;
         line-height: 1.4286;
         font-family: monospace;
+        overflow-x: scroll;
     }
 
-    input {
+    .resizing-input {
         padding: 0.5rem;
         padding-left: 0.75rem;
         padding-right: 0.75rem;
         box-sizing: content-box;
         font-family: monospace;
-        background-color: #030712;
+        background-color: inherit;
         font-size: 0.875rem;
         line-height: 1.4286;
         width: auto;
-        border: solid 1px #616161;
-        border-radius: 0.375rem;
+        outline: none;
+        border: none;
     }
 
-    input:hover {
-        background-color: #292929;
-        border-color: #818182;
+    .resizing-input-bordered {
+        background-color: var(--bordered-background-color);
+        border: var(--bordered-border);
+        border-radius: var(--bordered-border-radius);
+    }
+
+    .resizing-input-bordered:hover {
+        background-color: var(--bordered-hover-background-color);
+        border-color: var(--bordered-hover-border-color);
     }
 }

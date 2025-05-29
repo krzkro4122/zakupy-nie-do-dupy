@@ -2,16 +2,22 @@
     padding: 0.5rem;
     padding-left: 0.75rem;
     padding-right: 0.75rem;
-    background-color: #030712;
     font-size: 1.125rem;
-    border: 1px solid gray;
-    border-radius: 0.375rem;
+}
+
+.button-bordered {
+    background-color: var(--bordered-background-color);
+    border: var(--bordered-border);
+    border-radius: var(--bordered-border-radius);
 }
 
 .button:hover {
     cursor: pointer;
-    background-color: #292929;
-    border-color: #818182;
+}
+
+.button-bordered:hover {
+    background-color: var(--bordered-hover-background-color);
+    border-color: var(--bordered-hover-border-color);
 }
 
 .button:disabled {

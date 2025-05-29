@@ -8,6 +8,7 @@ export const Logout = () => {
             <Button
                 onClick={auth.logoutAction}
                 displayValue="Log out"
+                extraClassNames="button-bordered"
             ></Button>
         </>
     );
