@@ -7,13 +7,14 @@ type NamedItem = (Identifiable & TimeTracked & { name: string });
 
 interface ManagedListProps {
     items: NamedItem[];
+    selectedItemIds: string[];
+    setSelectedItemIds: React.Dispatch<React.SetStateAction<string[]>>;
     deleteItemAction: (id: string) => Promise<void>;
     updateItemAction: (id: string, formData: FormData) => Promise<void>;
     manageItemsAction: (formData: FormData) => Promise<void>;
 }
 
-export const ManagedList = ({ items, updateItemAction, deleteItemAction, manageItemsAction }: ManagedListProps) => {
-    const [selectedItemIds, setSelectedItemIds] = useState<string[]>([]);
+export const ManagedList = ({ items, updateItemAction, deleteItemAction, selectedItemIds, setSelectedItemIds }: ManagedListProps) => {
     const lastSelectedId = useRef<string>(null);
 
     const escapeClickFunction = useCallback((event: KeyboardEvent) => {
