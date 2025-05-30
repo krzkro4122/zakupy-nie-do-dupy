@@ -37,18 +37,22 @@
             user-select: none;
 
             .delete-button {
-                font-size: 0.75rem;
+                font-size: 1rem;
                 width: fit-content;
                 height: fit-content;
-                padding-left: 0.25rem;
-                padding-right: 0.25rem;
-                border-radius: 0.125rem;
+                padding: 0.5rem;
+                padding-left: .75rem;
+                padding-right: .75rem;
+                border-radius: 0.25rem;
+                outline: 1px solid whitesmoke;
                 font-family: monospace;
             }
 
             .delete-button:hover {
                 color: black;
                 background-color: #c10007;
+                border: none;
+                outline: 2px solid black;
             }
         }
 
