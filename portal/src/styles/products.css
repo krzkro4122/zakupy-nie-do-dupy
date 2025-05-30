@@ -10,10 +10,13 @@
         display: flex;
         flex-grow: 1;
         flex-direction: row;
-        align-items: center;
-        line-height: 80%;
+        align-items: flex-end;
         padding-left: 0.75rem;
         gap: 1rem;
+
+        h1 {
+            line-height: 105%;
+        }
     }
 
     .managed-list {
