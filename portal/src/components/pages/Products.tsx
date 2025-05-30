@@ -8,6 +8,7 @@ import { ManagedList } from "../ManagedList";
 
 export const Products = () => {
     const [products, setProducts] = useState<ProductResolved[]>([]);
+    const [selectedItemIds, setSelectedItemIds] = useState<string[]>([]);
 
     useEffect(() => {
         (async () => {
@@ -61,10 +62,13 @@ export const Products = () => {
         <section className="products">
             <section className="products-header">
                 <h1>Products</h1>
+                {selectedItemIds.length > 0 && <p>Selection count: {selectedItemIds.length}</p>}
             </section>
             {products.length > 0 && (
                 <ManagedList
                     items={products}
+                    selectedItemIds={selectedItemIds}
+                    setSelectedItemIds={setSelectedItemIds}
                     updateItemAction={updateProductAction}
                     deleteItemAction={deleteProductAction}
                     manageItemsAction={manageProductsAction}

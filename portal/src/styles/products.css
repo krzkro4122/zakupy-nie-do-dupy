@@ -10,6 +10,8 @@
         display: flex;
         flex-grow: 1;
         flex-direction: row;
+        align-items: center;
+        line-height: 80%;
         padding-left: 0.75rem;
         gap: 1rem;
     }
@@ -48,7 +50,7 @@
         }
 
         .managed-list-item-selected {
-            background-color: #28282f;
+            background-color: #29292a;
             outline: solid 1px #7f8081;
         }
 
