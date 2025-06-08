@@ -1,10 +1,11 @@
 import Pocketbase from 'pocketbase';
+import { Config } from './config';
 
 export interface UserAuthInformation {
     isLoggedIn: boolean;
 }
 
-const pbConnection = new Pocketbase('http://localhost:8090');
+const pbConnection = new Pocketbase(Config.getDbUrl());
 
 const LOCAL_STORAGE_TOKEN_KEY = 'provider';
 

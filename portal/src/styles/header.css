@@ -5,17 +5,23 @@
     justify-content: space-between;
     align-items: center;
 
-    .header-title {
-        font-weight: 700;
-        font-size: 1.875rem;
-        line-height: 1.2;
-        padding: 0.5rem;
-    }
-
     .header-link {
+        font-weight: 500;
+        font-size: 1.25rem;
+
         &:hover,
         &:active {
             text-decoration: underline;
+        }
+    }
+
+    .header-title {
+        padding: 0.5rem;
+
+        .header-link {
+            font-size: 1.875rem;
+            line-height: 1.2;
+            font-weight: 700;
         }
     }
 
