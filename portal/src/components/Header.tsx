@@ -13,9 +13,9 @@ export const Header = () => {
                     <nav className="header-nav">
                         <ul className="header-nav-list">
                             <li><a className="header-link" href="/products">Products</a></li>
-                    <li><a className="header-link" href="/shopping-list">Shopping List</a></li>
-                </ul>
-                </nav>
+                            <li><a className="header-link" href="/shopping-list">Cart</a></li>
+                        </ul>
+                    </nav>
                     <Logout />
                 </>
             }

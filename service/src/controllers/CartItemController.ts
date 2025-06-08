@@ -4,6 +4,12 @@ import { HttpError } from "../middlewares/errorHandlerMiddleware";
 import { GetCartItemParams, PostCartItemBody, UpdateCartItemParams, UpdateCartItemBody, DeleteCartItemParams } from "../../../shared/types/cart";
 
 
+// TODO
+// Validate cartId
+// Get names of products
+// Parametrize by cartId
+// Get cartId from params
+
 export const getCartItems = async (_request: Request, response: Response, next: NextFunction) => {
     const cartItems = await cartItemDAO.queryItems();
     try {

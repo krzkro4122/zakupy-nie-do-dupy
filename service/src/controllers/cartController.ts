@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { PostCartBody, GetCartParams, UpdateCartParams, UpdateCartBody, DeleteCartParams, CartBase, DeleteCartItemParams, UpdateCartItemParams, UpdateCartItemBody, PostCartItemBody, GetCartItemParams } from '../../../shared/types/cart';
 import { HttpError } from '../middlewares/errorHandlerMiddleware';
-import { cartDAO, cartItemDAO } from '../database/cartDAO';
+import { cartDAO } from '../database/cartDAO';
 
 export const getCarts = async (_request: Request, response: Response, next: NextFunction) => {
     const carts = await cartDAO.queryItems();

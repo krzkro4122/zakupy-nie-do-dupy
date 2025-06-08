@@ -1,6 +1,6 @@
 import type { Identifiable, TimeTracked } from "../../../shared/types/common";
 import { InlineForm } from "./InlineForm";
-import { useCallback, useEffect, useRef, useState, type EventHandler } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { Button } from "./Button";
 
 type NamedItem = (Identifiable & TimeTracked & { name: string });
@@ -33,7 +33,7 @@ export const ManagedList = ({ items, updateItemAction, deleteItemAction, selecte
     const handleItemSelect = (id: string, event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
         event.preventDefault();
         if (event.target === event.currentTarget) {
-            
+
             if (lastSelectedId.current !== null && event.nativeEvent.shiftKey) {
                 const ids = items.map(item => item.id);
                 const lastSelectedIdIndex = ids.findIndex((_id) => _id === lastSelectedId.current);
@@ -42,8 +42,7 @@ export const ManagedList = ({ items, updateItemAction, deleteItemAction, selecte
                 const end = Math.max(lastSelectedIdIndex, clickedIdIndex);
                 const extraIdsToSelect = ids.slice(start, end);
 
-
-                setSelectedItemIds([...selectedItemIds, ...extraIdsToSelect]);
+                setSelectedItemIds(Array.from(new Set([...selectedItemIds, ...extraIdsToSelect])));
                 return;
             }
 

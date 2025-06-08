@@ -25,7 +25,9 @@ export interface CartItemBase {
     cartId: string;
 }
 
-export interface CartItemResolved extends CartItemBase, Identifiable, TimeTracked { }
+export interface CartItemResolved extends CartItemBase, Identifiable, TimeTracked {
+    name: string;
+ }
 
 export interface GetCartItemParams extends Identifiable { }
 

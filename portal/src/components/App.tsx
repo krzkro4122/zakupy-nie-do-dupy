@@ -8,7 +8,7 @@ import { Login } from './pages/Login';
 import { Main } from './Main';
 import { NotFound } from './pages/NotFound';
 import { Products } from './pages/Products';
-import { ShoppingList } from './pages/ShoppingList';
+import { Cart } from './pages/Cart';
 
 import '../styles/main.css'
 import '../styles/fonts.css'
@@ -35,7 +35,7 @@ export function App() {
             <Route element={<PrivateRoutes />}>
               <Route path='/' element={<Navigate to='/products' />} />
               <Route path='/products' element={<Products />} />
-              <Route path='/shopping-list' element={<ShoppingList />} />
+              <Route path='/cart' element={<Cart />} />
               <Route path="*" element={<NotFound />} />
             </Route>
             <Route path='/login' element={<Login />} />
