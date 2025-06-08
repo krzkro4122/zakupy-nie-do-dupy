@@ -14,7 +14,7 @@ export const Products = () => {
     useEffect(() => {
         (async () => {
             const fetchedProducts = await fetchProducts();
-            if (fetchedProducts) {
+            if (fetchedProducts && products.length === 0) {
                 setProducts(fetchedProducts);
             }
         })()

@@ -4,21 +4,26 @@ import { Button } from "../Button";
 import { listCollectionAuthMethods } from "../../utilities/authentication";
 import { useAuth } from "../hooks/AuthProvider";
 import { BorderedSection } from "../BorderedSection";
+import { type AuthMethodInfo } from "../../../../shared/types/authentication";
 
 import '../../styles/login.css'
 
+type AuthMethodName = 'mfa' | 'otp' | 'password' | 'oauth2' | 'manual';
+
 export const Login = () => {
     const auth = useAuth();
-    const [authMethodsList, setAuthMethodsList] = useState<[string, any][]>()
+    const [authMethodsList, setAuthMethodsList] = useState<[AuthMethodName, AuthMethodInfo][]>()
 
     useEffect(() => {
         if (!authMethodsList || authMethodsList?.length === 0) {
             (async () => {
+                let authMethodsList: [AuthMethodName, AuthMethodInfo][] = [];
                 const authMethods = await listCollectionAuthMethods('users');
                 if (authMethods) {
-                    (authMethods as any).manual = { enabled: true }
-                    setAuthMethodsList(Object.entries(authMethods));
+                    authMethodsList.push(...Object.entries(authMethods) as [AuthMethodName, AuthMethodInfo][]);
                 }
+                authMethodsList.push(['manual', { enabled: true }]);
+                setAuthMethodsList(authMethodsList);
             })()
         }
     });
@@ -28,15 +33,13 @@ export const Login = () => {
             return authMethodsList.map(([methodName, config]) => {
                 return (
                     <li key={methodName}>
-                        <Button extraClassNames="bordered-button button-expanded" displayValue={methodName} disabled={!config.enabled} onClick={
-                            () => {
-                                if (methodName === 'manual') {
-                                    auth.loginAction(methodName)
-                                } else {
-                                    alert(`Using ${methodName} to auth!`)
-                                }
-                            }
-                        } ></Button>
+                        <Button
+                            extraClassNames="button-bordered button-expanded"
+                            displayValue={methodName}
+                            disabled={!config.enabled}
+                            onClick={() =>  auth.loginAction(methodName)}
+                        >
+                        </Button>
                     </li>
                 )
             });

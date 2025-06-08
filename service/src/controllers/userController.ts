@@ -3,7 +3,7 @@ import { UpdateUserBody, UpdateUserParams, UserResolved, DeleteUserParams, GetUs
 import { HttpError } from '../middlewares/errorHandlerMiddleware';
 import { userDAO } from '../database/userDAO';
 
-export const getUsers = async (request: Request, response: Response, next: NextFunction) => {
+export const getUsers = async (_request: Request, response: Response, next: NextFunction) => {
     const users = await userDAO.queryItems();
     try {
         response.json(users);

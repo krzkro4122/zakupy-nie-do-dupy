@@ -14,7 +14,7 @@ export const ShoppingList = () => {
     useEffect(() => {
         (async () => {
             const fetchedProducts = await fetchProducts();
-            if (fetchedProducts) {
+            if (fetchedProducts && shoppingList.length === 0) {
                 setShoppingList(fetchedProducts);
             }
         })()

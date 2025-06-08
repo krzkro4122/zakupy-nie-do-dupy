@@ -8,13 +8,17 @@ export const Header = () => {
     return (
         <header className="header">
             <h1 className="header-title"><a className="header-link" href="/">Zakupy Nie Do Dupy</a></h1>
-            <nav className="header-nav">
-                <ul className="header-nav-list">
-                    <li><a className="header-link" href="/products">Products</a></li>
+            {auth.isLoggedIn &&
+                <>
+                    <nav className="header-nav">
+                        <ul className="header-nav-list">
+                            <li><a className="header-link" href="/products">Products</a></li>
                     <li><a className="header-link" href="/shopping-list">Shopping List</a></li>
                 </ul>
-            </nav>
-            {auth.isLoggedIn && <Logout />}
+                </nav>
+                    <Logout />
+                </>
+            }
         </header>
     )
 };

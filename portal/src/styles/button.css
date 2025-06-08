@@ -3,24 +3,24 @@
     padding-left: 0.75rem;
     padding-right: 0.75rem;
     font-size: 1.125rem;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    &:disabled {
+        opacity: 40%;
+        cursor: not-allowed;
+    }
 }
 
 .button-bordered {
     background-color: var(--bordered-background-color);
     border: var(--bordered-border);
     border-radius: var(--bordered-border-radius);
-}
 
-.button:hover {
-    cursor: pointer;
-}
-
-.button-bordered:hover {
-    background-color: var(--bordered-hover-background-color);
-    border-color: var(--bordered-hover-border-color);
-}
-
-.button:disabled {
-    opacity: 40%;
-    cursor: not-allowed;
+    &:hover {
+        background-color: var(--bordered-hover-background-color);
+        border-color: var(--bordered-hover-border-color);
+    }
 }

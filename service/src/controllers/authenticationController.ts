@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { productDAO } from '../database/productDAO';
 import { pbConnection } from '../config/config';
 
-export const login = async (request: Request, response: Response, next: NextFunction) => {
+export const login = async (_request: Request, response: Response, next: NextFunction) => {
     try {
         const authData = await pbConnection.collection('users').authWithOAuth2({ provider: 'google' });
         console.log(pbConnection.authStore.isValid);
@@ -14,7 +14,7 @@ export const login = async (request: Request, response: Response, next: NextFunc
     }
 };
 
-export const logout = async (request: Request, response: Response, next: NextFunction) => {
+export const logout = async (_request: Request, response: Response, next: NextFunction) => {
     const authData = await pbConnection.authStore.clear();
     try {
         response.json(authData);
@@ -23,7 +23,7 @@ export const logout = async (request: Request, response: Response, next: NextFun
     }
 };
 
-export const register = async (request: Request, response: Response, next: NextFunction) => {
+export const register = async (_request: Request, response: Response, next: NextFunction) => {
     const products = await productDAO.queryItems();
     try {
         response.json(products);

@@ -8,3 +8,7 @@ export interface TimeTracked {
     created: string;
     updated: string;
 }
+
+export interface UserTracked {
+    userId: UUID;
+}

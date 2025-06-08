@@ -1,10 +1,10 @@
-import { type Identifiable, type TimeTracked } from "./common";
+import { type UserTracked, type Identifiable, type TimeTracked } from "./common";
 
 export interface ProductBase {
     name: string;
 }
 
-export interface ProductResolved extends ProductBase, Identifiable, TimeTracked { }
+export interface ProductResolved extends ProductBase, Identifiable, TimeTracked, UserTracked { }
 
 export interface GetProductParams extends Identifiable { }
 

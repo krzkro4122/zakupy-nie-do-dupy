@@ -33,7 +33,7 @@ export const ManagedList = ({ items, updateItemAction, deleteItemAction, selecte
     const handleItemSelect = (id: string, event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
         event.preventDefault();
         if (event.target === event.currentTarget) {
-
+            
             if (lastSelectedId.current !== null && event.nativeEvent.shiftKey) {
                 const ids = items.map(item => item.id);
                 const lastSelectedIdIndex = ids.findIndex((_id) => _id === lastSelectedId.current);
