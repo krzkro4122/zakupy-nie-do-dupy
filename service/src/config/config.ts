@@ -1,7 +1,4 @@
-import dotenv from 'dotenv';
-
 const PocketBase = require('pocketbase/cjs');
-dotenv.config();
 
 interface AppConfig {
   port: number;

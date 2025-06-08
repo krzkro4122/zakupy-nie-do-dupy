@@ -1,19 +1,35 @@
-header {
+.header {
     border-bottom: 1px solid white;
     padding: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    h1 {
+    .header-title {
         font-weight: 700;
         font-size: 1.875rem;
         line-height: 1.2;
         padding: 0.5rem;
+    }
 
-        a:hover,
-        a:active {
+    .header-link {
+        &:hover,
+        &:active {
             text-decoration: underline;
+        }
+    }
+
+    .header-nav {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+
+        .header-nav-list {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            list-style: none;
+            width: 50%;
         }
     }
 }

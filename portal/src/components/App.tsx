@@ -1,13 +1,14 @@
-import { Header } from './Header'
+import PrivateRoutes from './PrivateRoutes';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import { Login } from './pages/Login';
-import { Products } from './pages/Products';
-import { Main } from './Main';
-import { NotFound } from './pages/NotFound';
 import { getUserAuthInformation, type UserAuthInformation } from '../utilities/authentication';
 import { useState, useEffect } from 'react';
-import PrivateRoutes from './PrivateRoutes';
 import { AuthProvider } from './hooks/AuthProvider';
+import { Header } from './Header'
+import { Login } from './pages/Login';
+import { Main } from './Main';
+import { NotFound } from './pages/NotFound';
+import { Products } from './pages/Products';
+import { ShoppingList } from './pages/ShoppingList';
 
 import '../styles/main.css'
 import '../styles/fonts.css'
@@ -34,6 +35,7 @@ export function App() {
             <Route element={<PrivateRoutes />}>
               <Route path='/' element={<Navigate to='/products' />} />
               <Route path='/products' element={<Products />} />
+              <Route path='/shopping-list' element={<ShoppingList />} />
               <Route path="*" element={<NotFound />} />
             </Route>
             <Route path='/login' element={<Login />} />

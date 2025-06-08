@@ -6,8 +6,14 @@ import '../styles/header.css'
 export const Header = () => {
     const auth = useAuth();
     return (
-        <header>
-            <h1><a href="/">Zakupy Nie Do Dupy</a></h1>
+        <header className="header">
+            <h1 className="header-title"><a className="header-link" href="/">Zakupy Nie Do Dupy</a></h1>
+            <nav className="header-nav">
+                <ul className="header-nav-list">
+                    <li><a className="header-link" href="/products">Products</a></li>
+                    <li><a className="header-link" href="/shopping-list">Shopping List</a></li>
+                </ul>
+            </nav>
             {auth.isLoggedIn && <Logout />}
         </header>
     )

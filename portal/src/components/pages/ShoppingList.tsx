@@ -1,21 +1,21 @@
-import { useEffect, useState } from "react";
-import type { ProductResolved } from '../../../../shared/types/product';
 import { deleteProduct, fetchProducts, postProduct, updateProduct } from "../../utilities/products";
+import { useEffect, useState } from "react";
 import { InlineForm } from "../InlineForm";
 import { ManagedList } from "../ManagedList";
+import type { ProductResolved } from "../../../../shared/types/product";
 
 import '../../styles/products.css'
 import '../../styles/managedList.css'
 
-export const Products = () => {
-    const [products, setProducts] = useState<ProductResolved[]>([]);
+export const ShoppingList = () => {
+    const [shoppingList, setShoppingList] = useState<ProductResolved[]>([]);
     const [selectedItemIds, setSelectedItemIds] = useState<string[]>([]);
 
     useEffect(() => {
         (async () => {
             const fetchedProducts = await fetchProducts();
             if (fetchedProducts) {
-                setProducts(fetchedProducts);
+                setShoppingList(fetchedProducts);
             }
         })()
     }, []);
@@ -25,7 +25,7 @@ export const Products = () => {
         if (productName) {
             const addedProduct = await postProduct({ name: `${productName}` });
             if (addedProduct) {
-                setProducts([...products, addedProduct]);
+                setShoppingList([...shoppingList, addedProduct]);
             }
         }
     }
@@ -34,7 +34,7 @@ export const Products = () => {
         if (id) {
             const deleteWasSuccessful = await deleteProduct(id);
             if (deleteWasSuccessful) {
-                setProducts(products.filter((product) => product.id !== id));
+                setShoppingList(shoppingList.filter((product) => product.id !== id));
             }
         }
     }
@@ -44,7 +44,7 @@ export const Products = () => {
         if (id && productName) {
             const updatedProduct = await updateProduct(id, { name: `${productName}` });
             if (updatedProduct) {
-                setProducts(products.map((product) => {
+                setShoppingList(shoppingList.map((product) => {
                     if (product.id === updatedProduct.id) {
                         return updatedProduct;
                     }
@@ -62,12 +62,12 @@ export const Products = () => {
     return (
         <section className="products">
             <section className="products-header">
-                <h1>Products</h1>
+                <h1>Shopping List</h1>
                 {selectedItemIds.length > 0 && <p>Selection count: {selectedItemIds.length}</p>}
             </section>
-            {products.length > 0 && (
+            {shoppingList.length > 0 && (
                 <ManagedList
-                    items={products}
+                    items={shoppingList}
                     selectedItemIds={selectedItemIds}
                     setSelectedItemIds={setSelectedItemIds}
                     updateItemAction={updateProductAction}
