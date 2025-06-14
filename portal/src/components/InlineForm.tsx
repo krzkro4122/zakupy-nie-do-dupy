@@ -3,7 +3,7 @@ import { Button } from "./Button";
 import { v4 } from "uuid";
 import { ResizingInput } from "./ResizingInput";
 
-import '../styles/inlineForm.css'
+import './styles/inlineForm.css'
 
 interface InlineFormProps {
     action: (formData: FormData) => void | Promise<void>;

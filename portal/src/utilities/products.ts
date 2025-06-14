@@ -1,18 +1,18 @@
-import type { ProductBase, ProductResolved } from "../../../shared/types/product";
-import { fetchAllItems, postItem, deleteItem, updateItem } from "./rest";
+import type { ProductBase } from "../types/product";
+import { productDAO } from "../DAO/productDAO";
 
 export const fetchProducts = async () => {
-    return await fetchAllItems<ProductResolved>('products');
+    return await productDAO.queryItems();
 };
 
 export const postProduct = async (product: ProductBase) => {
-    return await postItem<ProductBase, ProductResolved>('products', product);
+    return await productDAO.addItem(product);
 };
 
 export const deleteProduct = async (id: string) => {
-    return await deleteItem('products', id);
+    return await productDAO.removeItem(id);
 };
 
 export const updateProduct = async (id: string, updatedProduct: ProductBase) => {
-    return await updateItem<ProductBase, ProductResolved>('products', id, updatedProduct);
+    return await productDAO.amendItem(id, updatedProduct);
 };

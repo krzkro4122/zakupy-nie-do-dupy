@@ -1,6 +1,6 @@
 import PrivateRoutes from './PrivateRoutes';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import { getUserAuthInformation, type UserAuthInformation } from '../utilities/authentication';
+import { isUserLoggedIn } from '../utilities/authentication';
 import { useState, useEffect } from 'react';
 import { AuthProvider } from './hooks/AuthProvider';
 import { Header } from './Header'
@@ -10,18 +10,16 @@ import { NotFound } from './pages/NotFound';
 import { Products } from './pages/Products';
 import { Cart } from './pages/Cart';
 
-import '../styles/main.css'
-import '../styles/fonts.css'
+import './styles/main.css'
+import './styles/fonts.css'
 
 export function App() {
-  const [authInformation, setAuthInformation] = useState<UserAuthInformation | undefined>(undefined);
+  const [isLoggedIn, setIsLoggedIn] = useState(isUserLoggedIn());
 
   useEffect(() => {
-    const newAuthInformation = getUserAuthInformation();
-    const newIsLoggedIn = newAuthInformation?.isLoggedIn;
-    const isLoggedIn = authInformation?.isLoggedIn;
+    const newIsLoggedIn = isUserLoggedIn();
     if (newIsLoggedIn !== isLoggedIn) {
-      setAuthInformation(authInformation);
+      setIsLoggedIn(newIsLoggedIn);
     }
   });
 

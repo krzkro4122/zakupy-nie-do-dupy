@@ -1,21 +1,26 @@
-import { useEffect, useState } from "react";
-import type { ProductResolved } from '../../../../shared/types/product';
 import { deleteProduct, fetchProducts, postProduct, updateProduct } from "../../utilities/products";
 import { InlineForm } from "../InlineForm";
+import { LoadingState } from "../LoadingState";
 import { ManagedList } from "../ManagedList";
+import { useEffect, useState } from "react";
+import type { ProductResolved } from '../../types/product';
 
-import '../../styles/products.css'
-import '../../styles/managedList.css'
+import '../styles/products.css'
+import '../styles/managedList.css'
 
 export const Products = () => {
     const [products, setProducts] = useState<ProductResolved[]>([]);
     const [selectedItemIds, setSelectedItemIds] = useState<string[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         (async () => {
-            const fetchedProducts = await fetchProducts();
-            if (fetchedProducts && products.length === 0) {
-                setProducts(fetchedProducts);
+            if (products.length === 0 && isLoading) {
+                const fetchedProducts = await fetchProducts();
+                setIsLoading(false);
+                if (fetchedProducts && fetchedProducts.length > 0) {
+                    setProducts(fetchedProducts);
+                }
             }
         })()
     }, []);
@@ -59,13 +64,11 @@ export const Products = () => {
         console.log(productIds);
     }
 
-    return (
-        <section className="products">
-            <section className="products-header">
-                <h1>Products</h1>
-                {selectedItemIds.length > 0 && <p>Selection count: {selectedItemIds.length}</p>}
-            </section>
-            {products.length > 0 && (
+    const getProductList = () => {
+        return isLoading ? (
+            <LoadingState />
+        ) : (
+            products.length > 0 ? (
                 <ManagedList
                     items={products}
                     selectedItemIds={selectedItemIds}
@@ -74,7 +77,21 @@ export const Products = () => {
                     deleteItemAction={deleteProductAction}
                     manageItemsAction={manageProductsAction}
                 />
-            )}
+            ) : (
+                <div className="no-products">
+                    <p className="no-products-text">No products</p>
+                </div>
+            )
+        )
+    }
+
+    return (
+        <section className="products">
+            <section className="products-header">
+                <h1>Products</h1>
+                {selectedItemIds.length > 0 && <p>Selection count: {selectedItemIds.length}</p>}
+            </section>
+            {getProductList()}
             <div className="product-controls-container">
                 <InlineForm
                     initialDisplayValue="Add product"

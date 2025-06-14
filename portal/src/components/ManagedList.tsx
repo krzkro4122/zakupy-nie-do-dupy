@@ -1,4 +1,4 @@
-import type { Identifiable, TimeTracked } from "../../../shared/types/common";
+import type { Identifiable, TimeTracked } from "../types/common";
 import { InlineForm } from "./InlineForm";
 import { useCallback, useEffect, useRef } from "react";
 import { Button } from "./Button";

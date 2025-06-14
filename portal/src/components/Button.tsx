@@ -1,4 +1,4 @@
-import '../styles/button.css'
+import './styles/button.css'
 
 interface ButtonProps {
     displayValue: string;
