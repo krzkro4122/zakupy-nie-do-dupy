@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from "react";
 
-import '../styles/borderedSection.css'
+import './styles/borderedSection.css'
 
 interface BorderedSectionProps extends PropsWithChildren {
     extraWrapperClassNames?: string;

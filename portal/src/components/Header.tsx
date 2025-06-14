@@ -1,7 +1,7 @@
 import { useAuth } from "./hooks/AuthProvider";
 import { Logout } from "./Logout";
 
-import '../styles/header.css'
+import './styles/header.css'
 
 export const Header = () => {
     const auth = useAuth();

@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { deleteCartItem, updateCartItem, fetchCartItems } from "../../utilities/cart";
+import { LoadingState } from "../LoadingState";
 import { ManagedList } from "../ManagedList";
-import type { CartItemResolved } from "../../../../shared/types/cart";
-import { fetchCart, deleteCartItem, updateCartItem } from "../../utilities/cart";
+import { useEffect, useState } from "react";
+import type { CartItemResolved } from "../../types/cart";
 
-import '../../styles/products.css'
-import '../../styles/managedList.css'
+import '../styles/products.css'
+import '../styles/managedList.css'
 
 // TODO
 // Update product name from here
@@ -12,12 +13,21 @@ import '../../styles/managedList.css'
 export const Cart = () => {
     const [cartItems, setCartItems] = useState<CartItemResolved[]>([]);
     const [selectedItemIds, setSelectedItemIds] = useState<string[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         (async () => {
-            const fetchedCartItems = await fetchCart();
-            if (fetchedCartItems && cartItems.length === 0) {
-                setCartItems(fetchedCartItems);
+            if (cartItems.length === 0 && isLoading) {
+                try {
+                    const fetchedCartItems = await fetchCartItems();
+                    setIsLoading(false);
+                    if (fetchedCartItems && fetchedCartItems.length > 0) {
+                        setCartItems(fetchedCartItems);
+                    }
+                } catch (error) {
+                    setIsLoading(false);
+                    console.error(error);
+                }
             }
         })()
     }, []);
@@ -51,22 +61,36 @@ export const Cart = () => {
         console.log(productIds);
     }
 
+    const getProductList = () => {
+        return (
+            isLoading ? (
+                <LoadingState />
+            ) : (
+                cartItems.length > 0 ? (
+                    <ManagedList
+                        items={cartItems}
+                        selectedItemIds={selectedItemIds}
+                        setSelectedItemIds={setSelectedItemIds}
+                        updateItemAction={updateCartItemAction}
+                        deleteItemAction={deleteCartItemAction}
+                        manageItemsAction={manageProductsAction}
+                    />
+                ) : (
+                    <div className="no-products">
+                        <p className="no-products-text">No products in cart</p>
+                    </div>
+                )
+            )
+        );
+    }
+
     return (
         <section className="products">
             <section className="products-header">
                 <h1>Cart</h1>
                 {selectedItemIds.length > 0 && <p>Selection count: {selectedItemIds.length}</p>}
             </section>
-            {cartItems.length > 0 && (
-                <ManagedList
-                    items={cartItems}
-                    selectedItemIds={selectedItemIds}
-                    setSelectedItemIds={setSelectedItemIds}
-                    updateItemAction={updateCartItemAction}
-                    deleteItemAction={deleteCartItemAction}
-                    manageItemsAction={manageProductsAction}
-                />
-            )}
+            {getProductList()}
         </section>
     );
 };

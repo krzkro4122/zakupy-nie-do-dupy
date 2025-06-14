@@ -1,51 +1,50 @@
-import Pocketbase from 'pocketbase';
+import { ClientResponseError, type AuthMethodsList, type RecordAuthResponse, type RecordModel } from 'pocketbase';
 import { Config } from './config';
 
-export interface UserAuthInformation {
-    isLoggedIn: boolean;
-}
+const pbConnection = Config.getPbConnection();
 
-const pbConnection = new Pocketbase(Config.getDbUrl());
+export type AuthMethodList = AuthMethodsList;
+export type AuthResponse = RecordAuthResponse<RecordModel>;
 
-const LOCAL_STORAGE_TOKEN_KEY = 'provider';
 
 export const login = async (authMethod: string, credentials?: any) => {
-    let authInformation: UserAuthInformation;
-    let authResponse: any;
+    let authResponse: RecordAuthResponse<RecordModel>;
     switch (authMethod) {
-        case 'manual':
-            authInformation = { isLoggedIn: true }
-            break
         case 'oauth':
             authResponse = await pbConnection.collection('users').authWithOAuth2({ provider: 'google' });
-            console.log(authResponse);
-            authInformation = {isLoggedIn: !!pbConnection.authStore.isValid}
             break
         default:
             authResponse = await pbConnection.collection('users').authWithPassword(credentials.email, credentials.password);
-            console.log(authResponse);
-            authInformation = { isLoggedIn: !!pbConnection.authStore.isValid }
             break
     }
-    localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, JSON.stringify(authInformation));
-    return authInformation;
+    return authResponse;
 };
 
 export const logout = () => {
     try {
         pbConnection.authStore.clear();
-    } catch (e) {}
-    localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
-};
-
-export const getUserAuthInformation = () => {
-    const rawData = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY);
-    if (rawData) {
-        const authInformation: UserAuthInformation = JSON.parse(rawData);
-        return authInformation
+    } catch (e) {
+        console.error(e);
     }
 };
 
+export const isUserLoggedIn = () => {
+    if (pbConnection.authStore.isValid) {
+        return true;
+    }
+    logout();
+    return false;
+};
+
 export const listCollectionAuthMethods = async (collectionName: string) => {
-    return await pbConnection.collection(collectionName).listAuthMethods();
+    try {
+        return await pbConnection.collection(collectionName).listAuthMethods();
+    } catch (e) {
+        if (e instanceof ClientResponseError) {
+            if (!e.isAbort) {
+                console.error(`Failed to list auth methods for collection: ${collectionName}`, e);
+            }
+        }
+
+    }
 }
