@@ -20,5 +20,8 @@
             border-radius: 0.25rem;
         }
 
+        .login-form-error {
+            color: red;
+        }
     }
 }

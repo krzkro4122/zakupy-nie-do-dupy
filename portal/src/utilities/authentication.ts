@@ -4,20 +4,28 @@ import { Config } from './config';
 const pbConnection = Config.getPbConnection();
 
 export type AuthMethodList = AuthMethodsList;
-export type AuthResponse = RecordAuthResponse<RecordModel>;
+export type AuthResponse = RecordAuthResponse<RecordModel> | undefined;
+export type AuthError = ClientResponseError | undefined;
+export type AuthResult = {
+    data: AuthResponse;
+    error: AuthError;
+};
 
-
-export const login = async (authMethod: string, credentials?: any) => {
-    let authResponse: RecordAuthResponse<RecordModel>;
-    switch (authMethod) {
-        case 'oauth':
-            authResponse = await pbConnection.collection('users').authWithOAuth2({ provider: 'google' });
-            break
-        default:
-            authResponse = await pbConnection.collection('users').authWithPassword(credentials.email, credentials.password);
-            break
-    }
-    return authResponse;
+export const login = async (authMethod: string, credentials?: any): Promise<AuthResult | undefined> => {
+    try {
+        switch (authMethod) {
+            case 'oauth':
+                return { data: await pbConnection.collection('users').authWithOAuth2({ provider: 'google' }), error: undefined };
+            default:
+                return { data: await pbConnection.collection('users').authWithPassword(credentials.email, credentials.password), error: undefined };
+        }
+    } catch (error) {
+        if (error instanceof ClientResponseError) {
+            if (!error.isAbort) {
+                console.error(`Failed to login with auth method: ${authMethod}`, error);
+            }
+            return { data: undefined, error };
+        }}
 };
 
 export const logout = () => {

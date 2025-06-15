@@ -1,10 +1,10 @@
-import { isUserLoggedIn, login, logout, type AuthResponse } from "../../utilities/authentication";
+import { isUserLoggedIn, login, logout, type AuthResult } from "../../utilities/authentication";
 import { useContext, createContext, useState, type PropsWithChildren, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface AuthContextValue {
   isLoggedIn: boolean;
-  loginAction: (authMethod: string, credentials?: any) => Promise<AuthResponse>;
+  loginAction: (authMethod: string, credentials?: any) => Promise<AuthResult | undefined>;
   logoutAction: () => void;
 }
 
@@ -20,10 +20,12 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   });
 
   const loginAction = async (authMethod: string, credentials?: any) => {
-    const authInformation = await login(authMethod, credentials);
-    setIsLoggedIn(isUserLoggedIn());
-    navigate('/');
-    return authInformation;
+    const loginRepsonse = await login(authMethod, credentials);
+    if (!loginRepsonse || !loginRepsonse.error) {
+      setIsLoggedIn(isUserLoggedIn());
+      navigate('/');
+    }
+    return loginRepsonse;
   }
 
   const logoutAction = () => {
