@@ -44,6 +44,16 @@ export const isUserLoggedIn = () => {
     return false;
 };
 
+
+
+export const getUser = () => {
+    if (pbConnection.authStore.isValid) {
+        return pbConnection.authStore.record;
+    }
+    logout();
+    return undefined;
+};
+
 export const listCollectionAuthMethods = async (collectionName: string) => {
     try {
         return await pbConnection.collection(collectionName).listAuthMethods();

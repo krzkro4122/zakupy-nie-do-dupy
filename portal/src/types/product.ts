@@ -1,10 +1,15 @@
 import { type UserTracked, type Identifiable, type TimeTracked } from "./common";
+import type { UserResolved } from "./user";
 
-export interface ProductBase {
+export interface ProductBase extends UserTracked {
     name: string;
 }
 
-export interface ProductResolved extends ProductBase, Identifiable, TimeTracked, UserTracked { }
+export interface ProductResolved extends ProductBase, Identifiable, TimeTracked {
+    expand: {
+        user: UserResolved;
+    };
+}
 
 export interface GetProductParams extends Identifiable { }
 

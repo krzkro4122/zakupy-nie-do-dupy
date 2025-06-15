@@ -1,5 +1,7 @@
+export type Id = string;
+
 export interface Identifiable {
-    id: string;
+    id: Id;
 }
 
 export interface TimeTracked {
@@ -8,5 +10,5 @@ export interface TimeTracked {
 }
 
 export interface UserTracked {
-    userId: string;
+    user: Id;
 }

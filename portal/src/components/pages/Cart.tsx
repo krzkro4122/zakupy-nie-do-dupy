@@ -6,6 +6,8 @@ import type { CartItemResolved } from "../../types/cart";
 
 import '../styles/products.css'
 import '../styles/managedList.css'
+import { getUser } from "../../utilities/authentication";
+import type { Id } from "../../types/common";
 
 // TODO
 // Update product name from here
@@ -32,7 +34,7 @@ export const Cart = () => {
         })()
     }, []);
 
-    const deleteCartItemAction = async (id: string) => {
+    const deleteCartItemAction = async (id: Id) => {
         if (id) {
             const deleteWasSuccessful = await deleteCartItem(id);
             if (deleteWasSuccessful) {
@@ -41,10 +43,10 @@ export const Cart = () => {
         }
     }
 
-    const updateCartItemAction = async (id: string, formData: FormData) => {
+    const updateCartItemAction = async (id: Id, formData: FormData) => {
         const productName = formData.get("resizing-input");
         if (id && productName) {
-            const updatedCartItem = await updateCartItem(id, { quantity: 1, isBought: false, productId: `${productName}`, cartId: "1" });
+            const updatedCartItem = await updateCartItem(id, { quantity: 1, isBought: false, product: `${productName}`, cart: "1" });
             if (updatedCartItem) {
                 setCartItems(cartItems.map((cartItem) => {
                     if (cartItem.id === updatedCartItem.id) {
@@ -57,8 +59,8 @@ export const Cart = () => {
     }
 
     const manageProductsAction = async (formData: FormData) => {
-        const productIds = formData.get("managed-list-form-select")
-        console.log(productIds);
+        const ids = formData.get("managed-list-form-select")
+        console.log(ids);
     }
 
     const getProductList = () => {
@@ -68,7 +70,12 @@ export const Cart = () => {
             ) : (
                 cartItems.length > 0 ? (
                     <ManagedList
-                        items={cartItems}
+                        items={cartItems.map(item => ({
+                            id: item.id,
+                            name: item.expand.product.name,
+                            created: item.created,
+                            updated: item.updated
+                        }))}
                         selectedItemIds={selectedItemIds}
                         setSelectedItemIds={setSelectedItemIds}
                         updateItemAction={updateCartItemAction}

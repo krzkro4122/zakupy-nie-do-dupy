@@ -38,4 +38,36 @@
             width: 50%;
         }
     }
+
+    .user-avatar {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        border: var(--bordered-border);
+
+        &:hover {
+            border-color: var(--bordered-hover-border-color);
+            box-shadow: 0 0 3px 0 var(--bordered-hover-border-color);
+            scale: 1.05;
+        }
+    }
+
+    .szh-menu {
+        background-color: var(--bordered-background-color);
+        outline: var(--bordered-border);
+        border-radius: 0.25rem;
+        box-shadow: 0 0 2px 0 var(--bordered-hover-border-color);
+
+        .user-menu-item {
+            list-style: none;
+            padding: 0.85rem;
+
+            &:hover {
+                background-color: var(--bordered-hover-background-color);
+                color: var(--text-color);
+                cursor: pointer;
+            }
+        }
+    }
+
 }

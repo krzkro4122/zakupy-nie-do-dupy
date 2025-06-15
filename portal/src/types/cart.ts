@@ -1,10 +1,16 @@
-import { type UserTracked, type Identifiable, type TimeTracked } from "./common";
+import { type UserTracked, type Identifiable, type TimeTracked, type Id } from "./common";
+import type { ProductResolved } from "./product";
+import type { UserResolved } from "./user";
 
-export interface CartBase {
+export interface CartBase extends UserTracked {
     isBought: boolean;
 }
 
-export interface CartResolved extends CartBase, Identifiable, TimeTracked, UserTracked { }
+export interface CartResolved extends CartBase, Identifiable, TimeTracked {
+    expand: {
+        user: UserResolved;
+    };
+}
 
 export interface GetCartParams extends Identifiable { }
 
@@ -21,13 +27,16 @@ export interface CartItemBase {
     quantity: number;
     isBought: boolean;
     unit?: string;
-    productId: string;
-    cartId: string;
+    product: Id;
+    cart: Id;
 }
 
 export interface CartItemResolved extends CartItemBase, Identifiable, TimeTracked {
-    name: string;
- }
+    expand: {
+        cart: CartResolved;
+        product: ProductResolved;
+    };
+}
 
 export interface GetCartItemParams extends Identifiable { }
 

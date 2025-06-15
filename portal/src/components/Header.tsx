@@ -1,5 +1,5 @@
 import { useAuth } from "./hooks/AuthProvider";
-import { Logout } from "./Logout";
+import { UserMenu } from "./UserMenu";
 
 import './styles/header.css'
 
@@ -16,7 +16,7 @@ export const Header = () => {
                             <li><a className="header-link" href="/cart">Cart</a></li>
                         </ul>
                     </nav>
-                    <Logout />
+                    <UserMenu />
                 </>
             }
         </header>
