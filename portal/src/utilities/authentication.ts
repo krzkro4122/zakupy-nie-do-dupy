@@ -1,5 +1,6 @@
 import { ClientResponseError, type AuthMethodsList, type RecordAuthResponse, type RecordModel } from 'pocketbase';
 import { Config } from './config';
+import type { UserResolved } from '../types/user';
 
 const pbConnection = Config.getPbConnection();
 
@@ -48,7 +49,7 @@ export const isUserLoggedIn = () => {
 
 export const getUser = () => {
     if (pbConnection.authStore.isValid) {
-        return pbConnection.authStore.record;
+        return pbConnection.authStore.record as RecordModel & UserResolved;
     }
     logout();
     return undefined;

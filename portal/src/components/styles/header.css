@@ -57,11 +57,61 @@
         outline: var(--bordered-border);
         border-radius: 0.25rem;
         box-shadow: 0 0 2px 0 var(--bordered-hover-border-color);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
         .user-menu-item {
             list-style: none;
-            padding: 0.85rem;
+            padding: 0.5rem;
+            padding-left: 0.75rem;
+            padding-right: 0.75rem;
+            width: max-content;
+            display: flex;
+            flex-grow: 1;
 
+            .user-details {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+
+                .user-details-name {
+                    font-weight: 600;
+                    font-size: 1.25rem;
+                }
+
+                .user-details-label {
+                    font-weight: 600;
+                    font-size: 0.875rem;
+                    opacity: 0.8;
+                }
+
+                .user-details-email {
+                    font-size: 0.875rem;
+                    opacity: 0.8;
+
+                    .user-details-email-text {
+                        text-decoration: underline;
+                        text-underline-position: from-font;
+                    }
+                }
+
+                .user-details-created {
+                    font-size: 0.875rem;
+                    opacity: 0.8;
+                }
+
+                .user-details-separator {
+                    border-top: 1px solid var(--bordered-border-color);
+                    width: 100%;
+                    opacity: 0.5;
+                }
+            }
+        }
+        .user-menu-item-clickable {
+            border-radius: 0.25rem;
+            margin-bottom: 0.5rem;
+            border: var(--bordered-border);
             &:hover {
                 background-color: var(--bordered-hover-background-color);
                 color: var(--text-color);
