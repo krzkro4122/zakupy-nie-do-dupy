@@ -29,7 +29,10 @@ export const Login = () => {
         const formData = new FormData(event.target as HTMLFormElement);
         const email = formData.get('email') as string;
         const password = formData.get('password') as string;
-        await auth.loginAction('password', { email, password });
+        const loginResponse = await auth.loginAction('password', { email, password });
+        if (loginResponse?.error) {
+            setError(loginResponse.error.message);
+        }
     }
 
     const getLoginForm = () => {
@@ -40,6 +43,7 @@ export const Login = () => {
                 <form onSubmit={handlePasswordLoginSubmit} className="login-form">
                     <input className="login-form-input resizing-input resizing-input-bordered" type="text" name="email" placeholder="Email" />
                     <input className="login-form-input resizing-input resizing-input-bordered" type="password" name="password" placeholder="Password" />
+                    {error && <p className="login-form-error">{error}</p>}
                     <input className="login-form-button button button-bordered" type="submit" value="Log in" />
                 </form>
             ) : (
