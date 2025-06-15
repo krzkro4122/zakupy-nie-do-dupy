@@ -7,6 +7,8 @@ import type { ProductResolved } from '../../types/product';
 
 import '../styles/products.css'
 import '../styles/managedList.css'
+import { getUser } from "../../utilities/authentication";
+import type { Id } from "../../types/common";
 
 export const Products = () => {
     const [products, setProducts] = useState<ProductResolved[]>([]);
@@ -28,14 +30,17 @@ export const Products = () => {
     const addProductAction = async (formData: FormData) => {
         const productName = formData.get("resizing-input");
         if (productName) {
-            const addedProduct = await postProduct({ name: `${productName}` });
-            if (addedProduct) {
-                setProducts([...products, addedProduct]);
+            const user = getUser();
+            if (user) {
+                const addedProduct = await postProduct({ name: `${productName}`, user: user.id });
+                if (addedProduct) {
+                    setProducts([...products, addedProduct]);
+                }
             }
         }
     }
 
-    const deleteProductAction = async (id: string) => {
+    const deleteProductAction = async (id: Id) => {
         if (id) {
             const deleteWasSuccessful = await deleteProduct(id);
             if (deleteWasSuccessful) {
@@ -44,24 +49,27 @@ export const Products = () => {
         }
     }
 
-    const updateProductAction = async (id: string, formData: FormData) => {
+    const updateProductAction = async (id: Id, formData: FormData) => {
         const productName = formData.get("resizing-input");
         if (id && productName) {
-            const updatedProduct = await updateProduct(id, { name: `${productName}` });
-            if (updatedProduct) {
-                setProducts(products.map((product) => {
+            const user = getUser();
+            if (user) {
+                const updatedProduct = await updateProduct(id, { name: `${productName}`, user: user.id });
+                if (updatedProduct) {
+                    setProducts(products.map((product) => {
                     if (product.id === updatedProduct.id) {
                         return updatedProduct;
                     }
-                    return product;
-                }));
+                        return product;
+                    }));
+                }
             }
         }
     }
 
     const manageProductsAction = async (formData: FormData) => {
-        const productIds = formData.get("managed-list-form-select")
-        console.log(productIds);
+        const ids = formData.get("managed-list-form-select")
+        console.log(ids);
     }
 
     const getProductList = () => {

@@ -8,6 +8,7 @@
         font-size: 0.875rem;
         line-height: 1.4286;
         font-family: monospace;
+        cursor: text;
     }
 
     &::-webkit-scrollbar {

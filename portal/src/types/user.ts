@@ -1,4 +1,4 @@
-import { Identifiable, TimeTracked } from "./common";
+import type { Identifiable, TimeTracked } from "./common";
 
 export interface UserBase {
   email?: string;

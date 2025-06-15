@@ -1,4 +1,4 @@
-import type { Identifiable, TimeTracked } from "../types/common";
+import type { Id, Identifiable, TimeTracked } from "../types/common";
 import { InlineForm } from "./InlineForm";
 import { useCallback, useEffect, useRef } from "react";
 import { Button } from "./Button";
@@ -9,8 +9,8 @@ interface ManagedListProps {
     items: NamedItem[];
     selectedItemIds: string[];
     setSelectedItemIds: React.Dispatch<React.SetStateAction<string[]>>;
-    deleteItemAction: (id: string) => Promise<void>;
-    updateItemAction: (id: string, formData: FormData) => Promise<void>;
+    deleteItemAction: (id: Id) => Promise<void>;
+    updateItemAction: (id: Id, formData: FormData) => Promise<void>;
     manageItemsAction: (formData: FormData) => Promise<void>;
 }
 
@@ -30,7 +30,7 @@ export const ManagedList = ({ items, updateItemAction, deleteItemAction, selecte
         };
     }, [escapeClickFunction]);
 
-    const handleItemSelect = (id: string, event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
+    const handleItemSelect = (id: Id, event: React.MouseEvent<HTMLLIElement, MouseEvent>) => {
         event.preventDefault();
         if (event.target === event.currentTarget) {
 
