@@ -3,26 +3,44 @@ import { cartDAO, cartItemDAO } from "../DAO/cartDAO";
 import { getUser } from "./authentication";
 import type { Id } from "../types/common";
 
-export const fetchCartItems = async () => {
+export const getActiveCart = async () => {
     const activeCarts = await fetchActiveCarts();
     if (activeCarts && activeCarts.length > 0) {
-        if (activeCarts[0]) {
-            return await cartItemDAO.queryItems();
-        }
+        return activeCarts[0];
+    }
+    return null;
+}
+
+export const fetchCartItems = async () => {
+    const activeCart = await getActiveCart();
+    if (activeCart) {
+        return await cartItemDAO.queryItems();
     }
     return [];
 };
 
 export const postCartItem = async (cartItem: CartItemBase) => {
-    return await cartItemDAO.addItem(cartItem);
+    const activeCart = await getActiveCart();
+    if (activeCart) {
+        return await cartItemDAO.addItem({ ...cartItem, cart: activeCart.id });
+    }
+    return null;
 };
 
 export const deleteCartItem = async (id: Id) => {
-    return await cartItemDAO.removeItem(id);
+    const activeCart = await getActiveCart();
+    if (activeCart) {
+        return await cartItemDAO.removeItem(id);
+    }
+    return null;
 };
 
 export const updateCartItem = async (id: Id, updatedCartItem: CartItemBase) => {
-    return await cartItemDAO.amendItem(id, updatedCartItem);
+    const activeCart = await getActiveCart();
+    if (activeCart) {
+        return await cartItemDAO.amendItem(id, { ...updatedCartItem, cart: activeCart.id });
+    }
+    return null;
 };
 
 

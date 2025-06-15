@@ -1,16 +1,15 @@
 import { deleteCartItem, updateCartItem, fetchCartItems } from "../../utilities/cart";
+import { getUser } from "../../utilities/authentication";
 import { LoadingState } from "../LoadingState";
 import { ManagedList } from "../ManagedList";
+import { updateProduct } from "../../utilities/products";
 import { useEffect, useState } from "react";
 import type { CartItemResolved } from "../../types/cart";
+import type { Id } from "../../types/common";
+import { v4 as uuidv4 } from 'uuid';
 
 import '../styles/products.css'
 import '../styles/managedList.css'
-import { getUser } from "../../utilities/authentication";
-import type { Id } from "../../types/common";
-
-// TODO
-// Update product name from here
 
 export const Cart = () => {
     const [cartItems, setCartItems] = useState<CartItemResolved[]>([]);
@@ -43,10 +42,10 @@ export const Cart = () => {
         }
     }
 
-    const updateCartItemAction = async (id: Id, formData: FormData) => {
-        const productName = formData.get("resizing-input");
-        if (id && productName) {
-            const updatedCartItem = await updateCartItem(id, { quantity: 1, isBought: false, product: `${productName}`, cart: "1" });
+    const modifyCartItemQuantity = async (id: Id, quantity: number) => {
+        const cartItem = cartItems.find((cartItem) => cartItem.id === id);
+        if (cartItem) {
+            const updatedCartItem = await updateCartItem(id, { ...cartItem, quantity: cartItem.quantity + quantity });
             if (updatedCartItem) {
                 setCartItems(cartItems.map((cartItem) => {
                     if (cartItem.id === updatedCartItem.id) {
@@ -58,12 +57,42 @@ export const Cart = () => {
         }
     }
 
-    const manageProductsAction = async (formData: FormData) => {
-        const ids = formData.get("managed-list-form-select")
-        console.log(ids);
+    const increaseCartItem = async (id: Id) => {
+        modifyCartItemQuantity(id, 1);
     }
 
-    const getProductList = () => {
+    const decreaseCartItem = async (id: Id) => {
+        modifyCartItemQuantity(id, -1);
+    }
+
+    const updateProductAction = async (id: Id, formData: FormData) => {
+        const productName = formData.get("resizing-input");
+        if (id && productName) {
+            const user = getUser();
+            if (user) {
+                const cartItem = cartItems.find((cartItem) => cartItem.id === id);
+                if (cartItem) {
+                    const updatedProduct = await updateProduct(cartItem.expand.product.id, { name: `${productName}`, user: user.id });
+                    if (updatedProduct) {
+                        setCartItems(cartItems.map((cartItem) => {
+                            if (cartItem.expand.product.id === updatedProduct.id) {
+                                return {
+                                    ...cartItem,
+                                    expand: {
+                                        ...cartItem.expand,
+                                        product: updatedProduct
+                                    }
+                                };
+                            }
+                            return cartItem;
+                        }));
+                    }
+                }
+            }
+        }
+    }
+
+    const getCartItemList = () => {
         return (
             isLoading ? (
                 <LoadingState />
@@ -74,13 +103,18 @@ export const Cart = () => {
                             id: item.id,
                             name: item.expand.product.name,
                             created: item.created,
-                            updated: item.updated
+                            updated: item.updated,
+                            quantity: item.quantity
                         }))}
                         selectedItemIds={selectedItemIds}
                         setSelectedItemIds={setSelectedItemIds}
-                        updateItemAction={updateCartItemAction}
-                        deleteItemAction={deleteCartItemAction}
-                        manageItemsAction={manageProductsAction}
+                        updateItemAction={updateProductAction}
+                        itemControls={[
+                            (id: Id) => <button type="button" key={uuidv4()} onClick={() => increaseCartItem(id)} className="item-control">+</button>,
+                            (id: Id) => <input type="button" key={uuidv4()} onChange={() => decreaseCartItem(id)} value={cartItems.find((item) => item.id === id)?.quantity} className="item-control"></input>,
+                            (id: Id) => <button type="button" key={uuidv4()} onClick={() => decreaseCartItem(id)} className="item-control">-</button>,
+                            (id: Id) => <button type="button" key={uuidv4()} onClick={() => deleteCartItemAction(id)} className="item-control delete">🚮</button>
+                        ]}
                     />
                 ) : (
                     <div className="no-products">
@@ -97,7 +131,7 @@ export const Cart = () => {
                 <h1>Cart</h1>
                 {selectedItemIds.length > 0 && <p>Selection count: {selectedItemIds.length}</p>}
             </section>
-            {getProductList()}
+            {getCartItemList()}
         </section>
     );
 };

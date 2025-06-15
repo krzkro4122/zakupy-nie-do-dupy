@@ -1,14 +1,16 @@
 import { deleteProduct, fetchProducts, postProduct, updateProduct } from "../../utilities/products";
+import { postCartItem } from "../../utilities/cart";
 import { InlineForm } from "../InlineForm";
 import { LoadingState } from "../LoadingState";
 import { ManagedList } from "../ManagedList";
 import { useEffect, useState } from "react";
 import type { ProductResolved } from '../../types/product';
+import { getUser } from "../../utilities/authentication";
+import type { Id } from "../../types/common";
+import { v4 as uuidv4 } from 'uuid';
 
 import '../styles/products.css'
 import '../styles/managedList.css'
-import { getUser } from "../../utilities/authentication";
-import type { Id } from "../../types/common";
 
 export const Products = () => {
     const [products, setProducts] = useState<ProductResolved[]>([]);
@@ -51,7 +53,7 @@ export const Products = () => {
 
     const updateProductAction = async (id: Id, formData: FormData) => {
         const productName = formData.get("resizing-input");
-        if (id && productName) {
+        if (productName) {
             const user = getUser();
             if (user) {
                 const updatedProduct = await updateProduct(id, { name: `${productName}`, user: user.id });
@@ -67,9 +69,8 @@ export const Products = () => {
         }
     }
 
-    const manageProductsAction = async (formData: FormData) => {
-        const ids = formData.get("managed-list-form-select")
-        console.log(ids);
+    const addToCartAction = async (id: Id) => {
+        await postCartItem({ product: id, quantity: 1, isBought: false, cart: "" });
     }
 
     const getProductList = () => {
@@ -82,8 +83,10 @@ export const Products = () => {
                     selectedItemIds={selectedItemIds}
                     setSelectedItemIds={setSelectedItemIds}
                     updateItemAction={updateProductAction}
-                    deleteItemAction={deleteProductAction}
-                    manageItemsAction={manageProductsAction}
+                    itemControls={[
+                        (id: Id) => <button type="button" key={uuidv4()} onClick={() => addToCartAction(id)} className="item-control">🛒</button>,
+                        (id: Id) => <button type="button" key={uuidv4()} onClick={() => deleteProductAction(id)} className="item-control delete">🚮</button>,
+                    ]}
                 />
             ) : (
                 <div className="no-products">
