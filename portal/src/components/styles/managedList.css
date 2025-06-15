@@ -20,24 +20,46 @@
             background-color: var(--bordered-hover-background-color);
         }
 
-        .delete-button {
+        .item-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .item-control {
             font-size: 1rem;
             width: fit-content;
             height: fit-content;
-            padding: 0.5rem;
-            padding-left: .75rem;
-            padding-right: .75rem;
+            padding: 0.35rem;
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
             border-radius: 0.25rem;
-            outline: 1px solid whitesmoke;
+            outline: 0.5px solid whitesmoke;
             font-family: monospace;
 
             &:hover {
                 color: black;
+                background-color: #7f8081;
+                border: none;
+                cursor: pointer;
+                outline: 1px solid #7f8081;
+            }
+        }
+
+        .delete {
+            &:hover {
                 background-color: #c10007;
                 border: none;
                 cursor: pointer;
                 outline: 1px solid #c10007;
             }
+        }
+
+        .increase {
+            background-color: #00c107;
+        }
+
+        .decrease {
+            background-color: #c10007;
         }
     }
 

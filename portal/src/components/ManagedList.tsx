@@ -1,20 +1,19 @@
 import type { Id, Identifiable, TimeTracked } from "../types/common";
 import { InlineForm } from "./InlineForm";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, type JSX } from "react";
 import { Button } from "./Button";
-
+import { v4 as uuidv4 } from 'uuid';
 type NamedItem = (Identifiable & TimeTracked & { name: string });
 
 interface ManagedListProps {
     items: NamedItem[];
     selectedItemIds: string[];
     setSelectedItemIds: React.Dispatch<React.SetStateAction<string[]>>;
-    deleteItemAction: (id: Id) => Promise<void>;
     updateItemAction: (id: Id, formData: FormData) => Promise<void>;
-    manageItemsAction: (formData: FormData) => Promise<void>;
+    itemControls: ((id: Id) => JSX.Element)[];
 }
 
-export const ManagedList = ({ items, updateItemAction, deleteItemAction, selectedItemIds, setSelectedItemIds }: ManagedListProps) => {
+export const ManagedList = ({ items, itemControls, selectedItemIds, updateItemAction, setSelectedItemIds }: ManagedListProps) => {
     const lastSelectedId = useRef<string>(null);
 
     const escapeClickFunction = useCallback((event: KeyboardEvent) => {
@@ -67,7 +66,7 @@ export const ManagedList = ({ items, updateItemAction, deleteItemAction, selecte
                     const isSelected = selectedItemIds.includes(item.id);
                     const classNamePrefix = "managed-list-item";
                     return (<li
-                        key={item.id}
+                        key={uuidv4()}
                         onClick={(event) => handleItemSelect(item.id, event)}
                         className={`${classNamePrefix} ${isSelected ? classNamePrefix + "-selected" : ""}`}
                     >
@@ -76,7 +75,9 @@ export const ManagedList = ({ items, updateItemAction, deleteItemAction, selecte
                             initialDisplayValue={item.name}
                             keepInitialValueAsInput={true}
                         />
-                        <button type="button" onClick={() => deleteItemAction(item.id)} className="delete-button">X</button>
+                        <div className="item-controls">
+                            {itemControls.map(control => control(item.id))}
+                        </div>
                     </li>);
                 })}
             </ul>
