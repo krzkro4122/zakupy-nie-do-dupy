@@ -3,6 +3,14 @@
     display: flex;
     flex-direction: column;
 
+    * {
+        color: var(--text-color);
+
+        &:hover {
+            color: var(--text-color);
+        }
+    }
+
     .managed-list-item {
         width: 100%;
         display: flex;
@@ -12,16 +20,17 @@
         padding-top: 0.25rem;
         padding-bottom: 0.25rem;
         padding-right: 0.5rem;
-        border-bottom: 0.5px solid #7f8081;
+        border-bottom: 0.5px solid var(--border-color);
         user-select: none;
 
-        &:hover {
+        &:hover, &:focus {
             cursor: pointer;
-            background-color: var(--bordered-hover-background-color);
+            background-color: var(--accent-color);
         }
 
         .item-controls {
             display: flex;
+            align-items: center;
             gap: 0.5rem;
         }
 
@@ -33,42 +42,37 @@
             padding-left: 0.5rem;
             padding-right: 0.5rem;
             border-radius: 0.25rem;
-            outline: 0.5px solid whitesmoke;
             font-family: monospace;
 
-            &:hover {
-                color: black;
-                background-color: #7f8081;
-                border: none;
+            &:hover, &:focus {
+                background-color: var(--background-color);
                 cursor: pointer;
-                outline: 1px solid #7f8081;
-            }
-        }
-
-        .delete {
-            &:hover {
-                background-color: #c10007;
-                border: none;
-                cursor: pointer;
-                outline: 1px solid #c10007;
             }
         }
 
         .increase {
-            background-color: #00c107;
+            background-color: var(--accent-color);
         }
 
         .decrease {
-            background-color: #c10007;
+            background-color: var(--accent-color);
         }
     }
 
     .managed-list-item-selected {
-        background-color: #29292a;
-        outline: solid 1px #7f8081;
+        background-color: var(--border-color);
+        border-color: var(--background-color);
 
-        &:hover {
-            background-color: #313131;
+        * {
+            color: var(--background-color);
+        }
+
+        &:hover, &:focus {
+            background-color: var(--accent-color);
+
+            * {
+                color: var(--text-color);
+            }
         }
     }
 

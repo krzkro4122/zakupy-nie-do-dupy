@@ -8,9 +8,12 @@ import type { ProductResolved } from '../../types/product';
 import { getUser } from "../../utilities/authentication";
 import type { Id } from "../../types/common";
 import { v4 as uuidv4 } from 'uuid';
+import { FaCartPlus } from "react-icons/fa";
+import { FaDeleteLeft } from "react-icons/fa6";
 
 import '../styles/products.css'
 import '../styles/managedList.css'
+import { ItemControl } from "../ItemControl";
 
 export const Products = () => {
     const [products, setProducts] = useState<ProductResolved[]>([]);
@@ -84,8 +87,8 @@ export const Products = () => {
                     setSelectedItemIds={setSelectedItemIds}
                     updateItemAction={updateProductAction}
                     itemControls={[
-                        (id: Id) => <button type="button" key={uuidv4()} onClick={() => addToCartAction(id)} className="item-control">🛒</button>,
-                        (id: Id) => <button type="button" key={uuidv4()} onClick={() => deleteProductAction(id)} className="item-control delete">🚮</button>,
+                        (id: Id) => <ItemControl key={uuidv4()} id={id} child={<FaCartPlus color="var(--text-color)" />} onClick={addToCartAction} />,
+                        (id: Id) => <ItemControl key={uuidv4()} id={id} child={<FaDeleteLeft color="var(--text-color)" />} onClick={deleteProductAction} />,
                     ]}
                 />
             ) : (
@@ -98,10 +101,6 @@ export const Products = () => {
 
     return (
         <section className="products">
-            <section className="products-header">
-                <h1>Products</h1>
-                {selectedItemIds.length > 0 && <p>Selection count: {selectedItemIds.length}</p>}
-            </section>
             {getProductList()}
             <div className="product-controls-container">
                 <InlineForm

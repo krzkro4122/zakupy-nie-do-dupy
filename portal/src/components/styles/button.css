@@ -15,12 +15,15 @@
 }
 
 .button-bordered {
-    background-color: var(--bordered-background-color);
-    border: var(--bordered-border);
-    border-radius: var(--bordered-border-radius);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border: 1px solid var(--text-color);
+    border-radius: 0.5rem;
 
     &:hover {
-        background-color: var(--bordered-hover-background-color);
-        border-color: var(--bordered-hover-border-color);
+        background-color: var(--text-color);
+        color: var(--background-color);
+        border-color: var(--text-color);
+        cursor: pointer;
     }
 }

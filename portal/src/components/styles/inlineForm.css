@@ -8,7 +8,16 @@
         font-size: 0.875rem;
         line-height: 1.4286;
         font-family: monospace;
-        cursor: text;
+
+        &:hover {
+            cursor: text;
+        }
+    }
+
+    .button-bordered {
+        &:hover {
+            cursor: pointer;
+        }
     }
 
     &::-webkit-scrollbar {
@@ -28,15 +37,19 @@
     width: auto;
     outline: none;
     border: none;
+
+    &::placeholder {
+        color: var(--text-color);
+    }
 }
 
 .resizing-input-bordered {
-    background-color: var(--bordered-background-color);
-    border: var(--bordered-border);
-    border-radius: var(--bordered-border-radius);
+    color: var(--text-color);
+    border: 1px solid var(--text-color);
+    border-radius: 0.5rem;
 
-    &:hover {
-        background-color: var(--bordered-hover-background-color);
-        border-color: var(--bordered-hover-border-color);
+    &:hover, &:focus {
+        /* background-color: var(--border-color); */
+        /* border-color: var(--text-color); */
     }
 }

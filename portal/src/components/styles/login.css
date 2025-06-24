@@ -10,14 +10,23 @@
 
         .login-form-input {
             padding: 0.5rem;
-            border: 1px solid #ccc;
+            border: 1px solid var(--border-color);
             border-radius: 0.25rem;
+            color: var(--text-color);
         }
 
         .login-form-button {
             padding: 0.5rem;
-            border: 1px solid #ccc;
+            border: 1px solid var(--border-color);
             border-radius: 0.25rem;
+            color: var(--text-color);
+
+            &:hover, &:focus {
+                background-color: var(--text-color);
+                border-color: var(--text-color);
+                color: var(--background-color);
+                text-decoration: underline;
+            }
         }
 
         .login-form-error {

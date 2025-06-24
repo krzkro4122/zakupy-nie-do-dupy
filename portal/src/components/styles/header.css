@@ -1,5 +1,5 @@
 .header {
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid var(--border-color);
     padding: 1rem;
     display: flex;
     justify-content: space-between;
@@ -8,9 +8,10 @@
     .header-link {
         font-weight: 500;
         font-size: 1.25rem;
+        color: var(--text-color);
 
         &:hover,
-        &:active {
+        &:focus {
             text-decoration: underline;
         }
     }
@@ -45,76 +46,86 @@
         border-radius: 50%;
         border: var(--bordered-border);
 
-        &:hover {
-            border-color: var(--bordered-hover-border-color);
-            box-shadow: 0 0 3px 0 var(--bordered-hover-border-color);
+        &:hover, &:focus {
+            border-color: var(--border-color);
+            box-shadow: 0 0 3px 0 var(--border-color);
             scale: 1.05;
         }
     }
 
     .szh-menu {
-        background-color: var(--bordered-background-color);
-        outline: var(--bordered-border);
+        background-color: var(--background-color);
+        outline: 1px solid var(--border-color);
         border-radius: 0.25rem;
-        box-shadow: 0 0 2px 0 var(--bordered-hover-border-color);
+        box-shadow: 0 0 4px 0 var(--border-color);
         display: flex;
         flex-direction: column;
         align-items: center;
+        list-style: none;
+        padding: 0.5rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        min-width: 300px;
+
+        * {
+            color: var(--text-color);
+        }
 
         .user-menu-item {
             list-style: none;
-            padding: 0.5rem;
-            padding-left: 0.75rem;
-            padding-right: 0.75rem;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
             width: max-content;
             display: flex;
+            align-items: center;
+            gap: 0.5rem;
             flex-grow: 1;
+            width: 100%;
+        }
 
-            .user-details {
-                display: flex;
-                flex-direction: column;
-                gap: 0.5rem;
+        .user-details-name {
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
 
-                .user-details-name {
-                    font-weight: 600;
-                    font-size: 1.25rem;
-                }
+        .user-details-label {
+            font-weight: 600;
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
 
-                .user-details-label {
-                    font-weight: 600;
-                    font-size: 0.875rem;
-                    opacity: 0.8;
-                }
+        .user-details-email {
+            font-size: 0.875rem;
 
-                .user-details-email {
-                    font-size: 0.875rem;
-                    opacity: 0.8;
-
-                    .user-details-email-text {
-                        text-decoration: underline;
-                        text-underline-position: from-font;
-                    }
-                }
-
-                .user-details-created {
-                    font-size: 0.875rem;
-                    opacity: 0.8;
-                }
-
-                .user-details-separator {
-                    border-top: 1px solid var(--bordered-border-color);
-                    width: 100%;
-                    opacity: 0.5;
-                }
+            .user-details-email-text {
+                text-decoration: underline;
+                text-underline-position: from-font;
             }
         }
+
+        .user-details-created {
+            font-size: 0.875rem;
+        }
+
+        .user-menu-divider {
+            padding: 0.5px;
+            width: 100%;
+            background-color: var(--border-color);
+        }
+
         .user-menu-item-clickable {
             border-radius: 0.25rem;
             margin-bottom: 0.5rem;
-            border: var(--bordered-border);
-            &:hover {
-                background-color: var(--bordered-hover-background-color);
-                color: var(--text-color);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &:hover, &:focus {
+                background-color: var(--text-color);
+                color: var(--background-color);
+                border-color: var(--text-color);
+                text-decoration: underline;
                 cursor: pointer;
             }
         }

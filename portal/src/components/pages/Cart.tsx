@@ -1,12 +1,14 @@
 import { deleteCartItem, updateCartItem, fetchCartItems } from "../../utilities/cart";
+import { FaDeleteLeft, FaMinus, FaPlus } from "react-icons/fa6";
 import { getUser } from "../../utilities/authentication";
+import { ItemControl } from "../ItemControl";
 import { LoadingState } from "../LoadingState";
 import { ManagedList } from "../ManagedList";
 import { updateProduct } from "../../utilities/products";
 import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 import type { CartItemResolved } from "../../types/cart";
 import type { Id } from "../../types/common";
-import { v4 as uuidv4 } from 'uuid';
 
 import '../styles/products.css'
 import '../styles/managedList.css'
@@ -22,6 +24,7 @@ export const Cart = () => {
                 try {
                     const fetchedCartItems = await fetchCartItems();
                     setIsLoading(false);
+                    console.log(fetchedCartItems);
                     if (fetchedCartItems && fetchedCartItems.length > 0) {
                         setCartItems(fetchedCartItems);
                     }
@@ -45,7 +48,7 @@ export const Cart = () => {
     const modifyCartItemQuantity = async (id: Id, quantity: number) => {
         const cartItem = cartItems.find((cartItem) => cartItem.id === id);
         if (cartItem) {
-            const updatedCartItem = await updateCartItem(id, { ...cartItem, quantity: cartItem.quantity + quantity });
+            const updatedCartItem = await updateCartItem(id, { ...cartItem, quantity: Math.max(cartItem.quantity + quantity, 1) });
             if (updatedCartItem) {
                 setCartItems(cartItems.map((cartItem) => {
                     if (cartItem.id === updatedCartItem.id) {
@@ -97,7 +100,7 @@ export const Cart = () => {
             isLoading ? (
                 <LoadingState />
             ) : (
-                cartItems.length > 0 ? (
+                cartItems && cartItems.length > 0 ? (
                     <ManagedList
                         items={cartItems.map(item => ({
                             id: item.id,
@@ -110,10 +113,10 @@ export const Cart = () => {
                         setSelectedItemIds={setSelectedItemIds}
                         updateItemAction={updateProductAction}
                         itemControls={[
-                            (id: Id) => <button type="button" key={uuidv4()} onClick={() => increaseCartItem(id)} className="item-control">+</button>,
-                            (id: Id) => <input type="button" key={uuidv4()} onChange={() => decreaseCartItem(id)} value={cartItems.find((item) => item.id === id)?.quantity} className="item-control"></input>,
-                            (id: Id) => <button type="button" key={uuidv4()} onClick={() => decreaseCartItem(id)} className="item-control">-</button>,
-                            (id: Id) => <button type="button" key={uuidv4()} onClick={() => deleteCartItemAction(id)} className="item-control delete">🚮</button>
+                            (id: Id) => <ItemControl key={uuidv4()} id={id} child={<FaPlus color="var(--text-color)" />} onClick={increaseCartItem} />,
+                            (id: Id) => <input type="button" tabIndex={-1} key={uuidv4()} onChange={() => decreaseCartItem(id)} value={cartItems.find((item) => item.id === id)?.quantity} className="item-control"></input>,
+                            (id: Id) => <ItemControl key={uuidv4()} id={id} child={<FaMinus color="var(--text-color)" />} onClick={decreaseCartItem} />,
+                            (id: Id) => <ItemControl key={uuidv4()} id={id} child={<FaDeleteLeft color="var(--text-color)" />} onClick={deleteCartItemAction} />,
                         ]}
                     />
                 ) : (
@@ -127,10 +130,6 @@ export const Cart = () => {
 
     return (
         <section className="products">
-            <section className="products-header">
-                <h1>Cart</h1>
-                {selectedItemIds.length > 0 && <p>Selection count: {selectedItemIds.length}</p>}
-            </section>
             {getCartItemList()}
         </section>
     );

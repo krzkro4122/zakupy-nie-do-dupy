@@ -58,9 +58,6 @@ export const ManagedList = ({ items, itemControls, selectedItemIds, updateItemAc
 
     return (
         <>
-            <Button
-                displayValue=""
-            ></Button>
             <ul className="managed-list">
                 {items.map(item => {
                     const isSelected = selectedItemIds.includes(item.id);

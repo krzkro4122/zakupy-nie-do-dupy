@@ -18,10 +18,12 @@ export class DAO<T extends {}, BaseT extends {}> implements IDAO<T, BaseT> {
         this.relationToExpand = relationToExpand;
     }
 
-    public queryItems = async () => {
+    public queryItems = async (filter?: string, sort?: string) => {
         try {
             const records = await pbConnection.collection(this.collectionName).getFullList({
                 expand: this.relationToExpand,
+                filter: filter,
+                sort: sort,
             });
             return records as unknown as T[];
         } catch (e) {
